@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --void: #000000;
+    --obsidian: #0a0a0a;
+    --graphite: #1a1a1a;
+    --charcoal: #262626;
+    --pearl: #f5f0eb;
+    --linen: #e8e0d8;
+    --copper: #c9a87c;
+    --copper-light: #d4b896;
+    --copper-dim: rgba(201,168,124,0.15);
+    --teal: #5c7c6b;
+    --teal-dim: rgba(92,124,107,0.12);
+    --slate: #4a5568;
+    --slate-dark: #64748b;
+    --white: #ffffff;
+    --error: #c94c4c;
+    --success: #5c7c6b;
+
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.625rem;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  /* Focus visible indicators for keyboard navigation */
+  :focus-visible {
+    outline: 2px solid #c9a87c;
+    outline-offset: 2px;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .section-padding {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+
+  .content-max-width {
+    @apply max-w-[1280px] mx-auto px-4 md:px-8;
+  }
+}
