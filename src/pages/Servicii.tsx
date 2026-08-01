@@ -323,9 +323,11 @@ function CTAButton({
               border: 'none',
             }
           : {
+              // The only secondary CTA sits on a --pearl section, where #c9a87c
+              // measures 1.98:1. --copper-ink is 5.46:1 on that ground.
               backgroundColor: 'transparent',
-              color: '#c9a87c',
-              border: '1px solid #c9a87c',
+              color: 'var(--copper-ink)',
+              border: '1px solid var(--copper-ink)',
             }
       }
       onMouseEnter={(e) => {

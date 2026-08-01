@@ -147,7 +147,7 @@ export default function ServiciiGrid() {
                 </p>
                 <span
                   className="inline-flex items-center gap-1 font-body text-sm font-medium transition-all duration-300 group-hover:gap-2"
-                  style={{ color: '#c9a87c' }}
+                  style={{ color: 'var(--copper-ink)' }}
                 >
                   Află mai mult
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
@@ -190,7 +190,7 @@ export default function ServiciiGrid() {
             </p>
             <span
               className="inline-flex items-center gap-1 font-body text-sm font-medium transition-all duration-300 group-hover:gap-2"
-              style={{ color: '#c9a87c' }}
+              style={{ color: 'var(--copper-ink)' }}
             >
               Contactează-ne
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">

@@ -346,10 +346,10 @@ export default function Contact() {
                 willChange: 'transform, opacity',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#d4b896'
+                e.currentTarget.style.color = '#5c4522'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = '#c9a87c'
+                e.currentTarget.style.color = 'var(--copper-ink)'
               }}
             >
               +40 723 926 446
@@ -633,8 +633,8 @@ export default function Contact() {
                           Sunt de acord cu prelucrarea datelor personale conform{' '}
                           <Link
                             to="/confidentialitate"
-                            className="transition-colors duration-300 hover:underline"
-                            style={{ color: '#c9a87c' }}
+                            className="underline transition-colors duration-300"
+                            style={{ color: 'var(--copper-ink)' }}
                           >
                             Politicii de Confidențialitate
                           </Link>
@@ -705,7 +705,7 @@ export default function Contact() {
                   willChange: 'transform, opacity',
                 }}
               >
-                <Phone size={24} style={{ color: '#c9a87c' }} />
+                <Phone size={24} style={{ color: 'var(--copper-ink)' }} />
                 <p
                   className="font-body mt-4 font-semibold"
                   style={{ fontSize: '0.875rem', color: '#000000' }}
@@ -715,12 +715,12 @@ export default function Contact() {
                 <a
                   href="tel:+40723926446"
                   className="font-body mt-1 inline-block transition-colors duration-300"
-                  style={{ fontSize: '1rem', color: '#c9a87c' }}
+                  style={{ fontSize: '1rem', color: 'var(--copper-ink)' }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#d4b896'
+                    e.currentTarget.style.color = '#5c4522'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = '#c9a87c'
+                    e.currentTarget.style.color = 'var(--copper-ink)'
                   }}
                 >
                   +40 723 926 446
@@ -730,7 +730,7 @@ export default function Contact() {
                   className="font-body mt-2 block transition-colors duration-300"
                   style={{ fontSize: '0.875rem', color: '#4a5568' }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#c9a87c'
+                    e.currentTarget.style.color = 'var(--copper-ink)'
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = '#4a5568'
@@ -750,7 +750,7 @@ export default function Contact() {
                   willChange: 'transform, opacity',
                 }}
               >
-                <Mail size={24} style={{ color: '#c9a87c' }} />
+                <Mail size={24} style={{ color: 'var(--copper-ink)' }} />
                 <p
                   className="font-body mt-4 font-semibold"
                   style={{ fontSize: '0.875rem', color: '#000000' }}
@@ -760,12 +760,12 @@ export default function Contact() {
                 <a
                   href="mailto:contact@cess.ro"
                   className="font-body mt-1 block transition-colors duration-300"
-                  style={{ fontSize: '1rem', color: '#c9a87c' }}
+                  style={{ fontSize: '1rem', color: 'var(--copper-ink)' }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#d4b896'
+                    e.currentTarget.style.color = '#5c4522'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = '#c9a87c'
+                    e.currentTarget.style.color = 'var(--copper-ink)'
                   }}
                 >
                   contact@cess.ro
@@ -773,12 +773,12 @@ export default function Contact() {
                 <a
                   href="mailto:office@cess.ro"
                   className="font-body mt-1 block transition-colors duration-300"
-                  style={{ fontSize: '1rem', color: '#c9a87c' }}
+                  style={{ fontSize: '1rem', color: 'var(--copper-ink)' }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#d4b896'
+                    e.currentTarget.style.color = '#5c4522'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = '#c9a87c'
+                    e.currentTarget.style.color = 'var(--copper-ink)'
                   }}
                 >
                   office@cess.ro
@@ -795,7 +795,7 @@ export default function Contact() {
                   willChange: 'transform, opacity',
                 }}
               >
-                <MapPin size={24} style={{ color: '#c9a87c' }} />
+                <MapPin size={24} style={{ color: 'var(--copper-ink)' }} />
                 <p
                   className="font-body mt-4 font-semibold"
                   style={{ fontSize: '0.875rem', color: '#000000' }}
@@ -862,7 +862,7 @@ export default function Contact() {
                 padding: '12px 24px',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#c9a87c'
+                e.currentTarget.style.color = 'var(--copper-ink)'
                 e.currentTarget.style.borderColor = '#c9a87c'
               }}
               onMouseLeave={(e) => {
@@ -887,7 +887,7 @@ export default function Contact() {
                 padding: '12px 24px',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#c9a87c'
+                e.currentTarget.style.color = 'var(--copper-ink)'
                 e.currentTarget.style.borderColor = '#c9a87c'
               }}
               onMouseLeave={(e) => {
@@ -912,7 +912,7 @@ export default function Contact() {
                 padding: '12px 24px',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#c9a87c'
+                e.currentTarget.style.color = 'var(--copper-ink)'
                 e.currentTarget.style.borderColor = '#c9a87c'
               }}
               onMouseLeave={(e) => {

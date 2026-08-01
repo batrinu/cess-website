@@ -143,7 +143,7 @@ export default function DeCeNoi() {
                   className="font-display font-normal mb-2"
                   style={{
                     fontSize: 'clamp(3rem, 6vw, 5rem)',
-                    color: '#c9a87c',
+                    color: 'var(--copper-ink)',
                     lineHeight: 1,
                   }}
                 >

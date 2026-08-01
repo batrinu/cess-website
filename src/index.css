@@ -13,6 +13,11 @@
     --copper: #c9a87c;
     --copper-light: #d4b896;
     --copper-dim: rgba(201,168,124,0.15);
+    /* --copper is the brand accent and is correct on dark grounds (9.38:1 on --void).
+       On light grounds it measures 1.98:1 on --pearl and 2.24:1 on white, far below the
+       4.5:1 AA minimum, so text and links on light surfaces use this darkened companion
+       instead: 5.46:1 on --pearl, 6.18:1 on white, same hue family. */
+    --copper-ink: #7a5c2e;
     --teal: #5c7c6b;
     --teal-dim: rgba(92,124,107,0.12);
     --slate: #4a5568;

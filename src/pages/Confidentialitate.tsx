@@ -383,7 +383,7 @@ export default function Confidentialitate() {
                     lineHeight: 1.8,
                   }}
                 >
-                  Site-ul utilizează cookie-uri. Pentru mai multe informații, consultați <a href="/cookie" className="transition-colors duration-300 hover:underline" style={{ color: '#c9a87c' }}>Politica Cookie</a>.
+                  Site-ul utilizează cookie-uri. Pentru mai multe informații, consultați <a href="/cookie" className="underline transition-colors duration-300" style={{ color: 'var(--copper-ink)' }}>Politica Cookie</a>.
                 </p>
               </section>
             </SectionReveal>

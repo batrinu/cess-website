@@ -133,12 +133,12 @@ export default function Newsletter() {
                   <Link
                     to="/confidentialitate"
                     className="underline transition-colors duration-300"
-                    style={{ color: '#c9a87c' }}
+                    style={{ color: 'var(--copper-ink)' }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.color = '#d4b896'
+                      e.currentTarget.style.color = '#5c4522'
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.color = '#c9a87c'
+                      e.currentTarget.style.color = 'var(--copper-ink)'
                     }}
                   >
                     Politicii de Confidențialitate

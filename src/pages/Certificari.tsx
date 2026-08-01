@@ -241,12 +241,12 @@ export default function Certificari() {
                     onClick={() => openLightbox(cert.image)}
                     className="font-body mt-4 inline-flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5"
                     style={{
-                      color: '#c9a87c',
+                      color: 'var(--copper-ink)',
                       fontSize: '0.8125rem',
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      border: '1px solid #c9a87c',
+                      border: '1px solid var(--copper-ink)',
                       padding: '10px 20px',
                     }}
                     onMouseEnter={(e) => {

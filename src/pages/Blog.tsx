@@ -363,7 +363,7 @@ function BlogListing() {
                 </p>
                 <span
                   className="inline-flex items-center gap-1 font-body text-sm font-medium transition-colors duration-300 group-hover:underline"
-                  style={{ color: '#c9a87c' }}
+                  style={{ color: 'var(--copper-ink)' }}
                 >
                   Continuă să citești
                   <span className="transition-transform duration-300 group-hover:translate-x-1">

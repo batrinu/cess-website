@@ -164,7 +164,7 @@ export default function Footer() {
             </span>
           </div>
           <span className="font-body text-xs" style={{ color: '#94a3b8' }}>
-            © 2025 CESS TRUST S.R.L. CUI: 37449212
+            © 2026 CESS TRUST S.R.L. CUI: 37449212
           </span>
         </div>
 

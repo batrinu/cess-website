@@ -72,7 +72,7 @@ export default function Navbar() {
                 to={link.path}
                 className="relative font-body text-sm tracking-wide transition-colors duration-300 group"
                 style={{
-                  color: location.pathname === link.path ? '#c9a87c' : '#94a3b8',
+                  color: location.pathname === link.path ? 'var(--copper-ink)' : '#94a3b8',
                 }}
               >
                 {link.label}

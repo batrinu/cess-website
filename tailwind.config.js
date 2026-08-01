@@ -13,6 +13,7 @@ module.exports = {
         linen: "#e8e0d8",
         copper: "#c9a87c",
         "copper-light": "#d4b896",
+        "copper-ink": "#7a5c2e",
         "copper-dim": "rgba(201,168,124,0.15)",
         teal: "#5c7c6b",
         "teal-dim": "rgba(92,124,107,0.12)",
