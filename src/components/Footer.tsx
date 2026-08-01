@@ -166,17 +166,6 @@ export default function Footer() {
           <span className="font-body text-xs" style={{ color: '#94a3b8' }}>
             © 2025 CESS TRUST S.R.L. CUI: 37449212
           </span>
-          <a
-            href="https://amiedwmsolutions.ro/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-body text-xs transition-colors duration-300"
-            style={{ color: '#94a3b8' }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = '#c9a87c' }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = '#94a3b8' }}
-          >
-            CESS.ro Creat cu drag de Amied Wm Solutions
-          </a>
         </div>
 
         {/* ANPC Badges — image + text links */}

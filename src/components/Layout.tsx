@@ -13,7 +13,9 @@ export default function Layout() {
       <Navbar />
       {/* Boundary sits inside main so the navbar and footer stay mounted while a
           lazily-loaded page chunk is in flight. min-height stops the footer jumping. */}
-      <main className="flex-1">
+      {/* id is the target of the "Sari la conținut" skip link in Navbar; tabIndex={-1}
+          is what makes focus actually land here rather than only scrolling. */}
+      <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
         <Suspense fallback={<div className="min-h-[60dvh]" aria-busy="true" />}>
           <Outlet />
         </Suspense>

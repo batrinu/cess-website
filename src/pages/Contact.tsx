@@ -187,13 +187,31 @@ export default function Contact() {
     setIsSubmitting(true)
     setFormStatus('submitting')
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    // TODO(email): there is no backend for this form yet. Until one exists, hand the
+    // enquiry to the visitor's mail client rather than pretending it was sent — the
+    // previous version waited 1500ms and showed "trimis cu succes" while silently
+    // discarding every message. Do not restore that. See NOTES.md.
+    const subject = formData.subject
+      ? `Cerere de pe site: ${formData.subject}`
+      : 'Cerere de pe site'
 
-    // Simulate success
+    const body = [
+      `Nume: ${formData.name}`,
+      `Email: ${formData.email}`,
+      formData.subject ? `Subiect: ${formData.subject}` : null,
+      '',
+      formData.message,
+    ]
+      .filter((line) => line !== null)
+      .join('\n')
+
+    window.location.href =
+      `mailto:contact@cess.ro?subject=${encodeURIComponent(subject)}` +
+      `&body=${encodeURIComponent(body)}`
+
     setIsSubmitting(false)
     setFormStatus('success')
-    setSubmitStatus('success')
+    setSubmitStatus('idle')
   }
 
   const handleInputChange = (
@@ -239,7 +257,8 @@ export default function Contact() {
   const errorStyle: React.CSSProperties = {
     fontFamily: 'Inter, sans-serif',
     fontSize: '0.875rem',
-    color: '#ef4444',
+    // #ef4444 measured 3.32:1 on --pearl, below the 4.5:1 AA minimum for this size.
+    color: '#b3261e', // 5.77:1 on pearl, 6.54:1 on white
     marginTop: '6px',
   }
 
@@ -377,13 +396,30 @@ export default function Contact() {
                     className="font-body mt-4 font-semibold"
                     style={{ fontSize: '1.25rem', color: '#000000' }}
                   >
-                    Mulțumim! Mesajul tău a fost trimis cu succes.
+                    Ți-am pregătit mesajul în aplicația ta de email.
                   </p>
                   <p
                     className="font-body mt-2"
-                    style={{ fontSize: '1rem', color: '#4a5568' }}
+                    style={{ fontSize: '1rem', color: '#4a5568', maxWidth: '46ch' }}
                   >
-                    Te vom contacta în cel mai scurt timp.
+                    Mai apasă o dată „Trimite” acolo și ajunge la noi. Dacă nu s-a
+                    deschis nimic, scrie-ne direct la{' '}
+                    <a
+                      href="mailto:contact@cess.ro"
+                      className="underline"
+                      style={{ color: '#7a5c2e' }}
+                    >
+                      contact@cess.ro
+                    </a>{' '}
+                    sau sună la{' '}
+                    <a
+                      href="tel:+40723926446"
+                      className="underline"
+                      style={{ color: '#7a5c2e' }}
+                    >
+                      +40 723 926 446
+                    </a>
+                    .
                   </p>
                 </div>
               ) : (
@@ -551,11 +587,17 @@ export default function Contact() {
                           type="checkbox"
                           checked={formData.consent}
                           onChange={handleConsentChange}
-                          className="sr-only"
+                          className="sr-only peer"
                           aria-invalid={!!errors.consent}
+                          aria-describedby={errors.consent ? 'consent-error' : undefined}
                         />
+                        {/* Presentational only. The real <input> above is inside this
+                            <label>, so it already handles click, Space and focus — giving
+                            this span its own role/tabIndex/onClick made it a second control
+                            that toggled the state back again, so the box could never be ticked. */}
                         <span
-                          className="shrink-0 mt-0.5 flex items-center justify-center transition-colors duration-200"
+                          aria-hidden="true"
+                          className="shrink-0 mt-0.5 flex items-center justify-center transition-colors duration-200 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#7a5c2e]"
                           style={{
                             width: '20px',
                             height: '20px',
@@ -565,24 +607,6 @@ export default function Contact() {
                             backgroundColor: formData.consent
                               ? '#c9a87c'
                               : '#ffffff',
-                          }}
-                          onClick={() =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              consent: !prev.consent,
-                            }))
-                          }
-                          role="checkbox"
-                          aria-checked={formData.consent}
-                          tabIndex={0}
-                          onKeyDown={(e) => {
-                            if (e.key === ' ' || e.key === 'Enter') {
-                              e.preventDefault()
-                              setFormData((prev) => ({
-                                ...prev,
-                                consent: !prev.consent,
-                              }))
-                            }
                           }}
                         >
                           {formData.consent && (
@@ -618,7 +642,7 @@ export default function Contact() {
                         </span>
                       </label>
                       {errors.consent && (
-                        <p style={{ ...errorStyle, marginLeft: '32px' }}>
+                        <p id="consent-error" style={{ ...errorStyle, marginLeft: '32px' }}>
                           {errors.consent}
                         </p>
                       )}
