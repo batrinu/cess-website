@@ -23,7 +23,7 @@ const certifications: CertificationDoc[] = [
     detailColor: '#64748b',
     description:
       'Autorizație emisă de Corpul Experților Contabili și Contabililor Autorizați din România, care atestă dreptul de a practica activități de contabilitate și audit.',
-    image: '/ceccar-2025.png',
+    image: '/ceccar-2025.jpg',
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ const certifications: CertificationDoc[] = [
     detailColor: '#5c7c6b',
     description:
       'Certificat care atestă abilitarea profesională în domeniul serviciilor de suport administrative și de conformare.',
-    image: '/certificat-abilitare.png',
+    image: '/certificat-abilitare.jpg',
   },
 ]
 

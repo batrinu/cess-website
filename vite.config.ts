@@ -5,7 +5,9 @@ import { inspectAttr } from 'plugin-inspect-react-code'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',
+  // Must be an absolute base now that routes are real paths: with './', assets on a
+  // nested route such as /blog/post would resolve to /blog/assets/… and 404.
+  base: '/',
   plugins: [inspectAttr(), react()],
   server: {
     port: 3000,
@@ -13,6 +15,19 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        // Split long-lived library code out of the app chunk so a content or
+        // component change does not force visitors to re-download React and GSAP.
+        // three is already its own chunk via the dynamic import in FluidGateway.
+        manualChunks: {
+          react: ["react", "react-dom", "react-router"],
+          gsap: ["gsap", "@gsap/react"],
+        },
+      },
     },
   },
 });

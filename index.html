@@ -7,12 +7,34 @@
     <meta name="description" content="CESS oferă servicii complete de contabilitate, consultanță fiscală, GDPR, SSM, PSI, salarizare și securitate fizică pentru companii din România.">
     <meta property="og:title" content="CESS - Servicii Suport pentru Conformare">
     <meta property="og:description" content="Servicii complete de conformare: contabilitate, fiscalitate, GDPR, SSM, PSI, salarizare, securitate fizică.">
-    <meta property="og:image" content="/og-image.jpg">
+    <!-- Open Graph requires an absolute URL; a relative path yields no preview image. -->
+    <meta property="og:image" content="https://www.cess.ro/og-image.jpg">
+    <meta property="og:image:width" content="1376">
+    <meta property="og:image:height" content="768">
+    <meta property="og:image:alt" content="CESS - Centrul Externalizat pentru Servicii Suport Administrative și Legale">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CESS">
+    <meta property="og:locale" content="ro_RO">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://www.cess.ro/og-image.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet" />
+    <script>
+      // The site previously used a hash router, so links shared as
+      // https://www.cess.ro/#/servicii are still in circulation. Rewrite them to the
+      // real path before the app boots, so they land on the right page instead of home.
+      // Runs only for "#/" — ordinary in-page anchors such as #main-content are untouched.
+      (function () {
+        var hash = window.location.hash
+        if (hash.indexOf('#/') !== 0) return
+        var target = hash.slice(1)
+        if (window.location.search && target.indexOf('?') === -1) {
+          target += window.location.search
+        }
+        window.history.replaceState(null, '', target)
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

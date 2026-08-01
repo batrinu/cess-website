@@ -1,0 +1,5 @@
+# Cloudflare Pages SPA fallback.
+# The app uses BrowserRouter, so /servicii, /contact etc. are client-side routes with
+# no matching file on disk. Without this rule a direct visit or a refresh on any route
+# other than / would return 404. Static assets are served before this rule applies.
+/*    /index.html   200

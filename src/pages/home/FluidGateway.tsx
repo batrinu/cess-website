@@ -1,6 +1,8 @@
 import { useRef, useEffect, useCallback } from 'react'
 import { Link } from 'react-router'
-import * as THREE from 'three'
+// Type-only: erased at compile time, so it does not pull three into the main bundle.
+// The runtime module is loaded on demand in the effect below.
+import type * as THREE from 'three'
 
 const vertexShader = `
   varying vec2 vUv;
@@ -129,56 +131,73 @@ export default function FluidGateway() {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false })
-    rendererRef.current = renderer
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    // three is ~600 kB. Loading it on demand keeps it out of the initial bundle so
+    // the hero copy paints immediately; the shader fades in a moment later over the
+    // section's black background, so there is no layout shift and nothing missing.
+    let disposed = false
+    let teardown: (() => void) | undefined
 
-    const scene = new THREE.Scene()
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+    import('three').then((THREE) => {
+      // The component may have unmounted while the chunk was in flight.
+      if (disposed) return
 
-    const uniforms = {
-      uTime: { value: 0 },
-      uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-      uMouse: { value: new THREE.Vector2(0, 0) },
-    }
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: false })
+      rendererRef.current = renderer
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-    const material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms,
+      const scene = new THREE.Scene()
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+
+      const uniforms = {
+        uTime: { value: 0 },
+        uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        uMouse: { value: new THREE.Vector2(0, 0) },
+      }
+
+      const material = new THREE.ShaderMaterial({
+        vertexShader,
+        fragmentShader,
+        uniforms,
+      })
+
+      const geometry = new THREE.PlaneGeometry(2, 2)
+      const mesh = new THREE.Mesh(geometry, material)
+      scene.add(mesh)
+
+      const startTime = performance.now()
+
+      const animate = () => {
+        rafRef.current = requestAnimationFrame(animate)
+        uniforms.uTime.value = (performance.now() - startTime) / 1000
+        uniforms.uMouse.value.set(mouseRef.current.x, mouseRef.current.y)
+        renderer.render(scene, camera)
+      }
+
+      animate()
+
+      const handleResize = () => {
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        uniforms.uResolution.value.set(window.innerWidth, window.innerHeight)
+      }
+
+      window.addEventListener('resize', handleResize, { passive: true })
+      window.addEventListener('mousemove', handleMouseMove, { passive: true })
+
+      teardown = () => {
+        cancelAnimationFrame(rafRef.current)
+        window.removeEventListener('resize', handleResize)
+        window.removeEventListener('mousemove', handleMouseMove)
+        geometry.dispose()
+        material.dispose()
+        renderer.dispose()
+        rendererRef.current = null
+      }
     })
 
-    const geometry = new THREE.PlaneGeometry(2, 2)
-    const mesh = new THREE.Mesh(geometry, material)
-    scene.add(mesh)
-
-    const startTime = performance.now()
-
-    const animate = () => {
-      rafRef.current = requestAnimationFrame(animate)
-      uniforms.uTime.value = (performance.now() - startTime) / 1000
-      uniforms.uMouse.value.set(mouseRef.current.x, mouseRef.current.y)
-      renderer.render(scene, camera)
-    }
-
-    animate()
-
-    const handleResize = () => {
-      renderer.setSize(window.innerWidth, window.innerHeight)
-      uniforms.uResolution.value.set(window.innerWidth, window.innerHeight)
-    }
-
-    window.addEventListener('resize', handleResize, { passive: true })
-    window.addEventListener('mousemove', handleMouseMove, { passive: true })
-
     return () => {
-      cancelAnimationFrame(rafRef.current)
-      window.removeEventListener('resize', handleResize)
-      window.removeEventListener('mousemove', handleMouseMove)
-      geometry.dispose()
-      material.dispose()
-      renderer.dispose()
+      disposed = true
+      teardown?.()
     }
   }, [handleMouseMove])
 
