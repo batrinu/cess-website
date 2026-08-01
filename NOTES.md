@@ -31,25 +31,27 @@ requirement.
 
 ---
 
-## 2. Contrast remediation — partly done
+## 2. Contrast remediation — copper done, greys outstanding
 
-Fixed so far:
+**Done:**
 - Form error text `#ef4444` → `#b3261e` (was 3.32:1 on pearl, now 5.77:1).
+- Copper on light grounds → new `--copper-ink: #7a5c2e` (5.46:1 on pearl, 6.18:1 on
+  white). Applied only where the rendered DOM measured a failure, across all nine
+  routes; `#c9a87c` is untouched on dark grounds and for fills/rules/borders.
+  Link hovers no longer go *lighter* (`#d4b896`, 1.89:1 on white) — they darken.
+  Re-measured after the change: zero copper failures on any route.
 
-Still outstanding, measured but not yet changed:
+**Still outstanding:**
 
 | Colour | Ground | Ratio | Where |
 |---|---|---|---|
-| `#c9a87c` copper | pearl `#f5f0eb` | **1.98:1** | ~45 text uses — service-card "Află mai mult", phone/email on contact cards, "Vezi documentul", policy links |
-| `#c9a87c` copper | white | 2.24:1 | same, on white card surfaces |
 | `#64748b` | pearl | 4.20:1 | 46 uses — the entire body copy of Termeni, Confidențialitate, Cookie |
+| `#64748b` | `#000` | 4.41:1 | same token on dark sections |
 | `#5c7c6b` teal | pearl | 4.08:1 | 13 uses |
 
-Copper is fine on dark grounds (9.38:1 on `#000`) and should stay there. For light
-grounds a darkened companion measures well and keeps the hue:
-
-- `--copper-ink: #7a5c2e` → 5.46:1 on pearl, 6.18:1 on white
-- muted body replacement `#5a687d` → 5.00:1 on pearl (vs 4.20 today)
+Suggested replacement for the muted body grey: `#5a687d` → 5.00:1 on pearl (vs 4.20
+today), minimal visual change. This one is a bigger sweep than copper was, because it
+is the running body text of the three legal pages.
 
 ---
 
