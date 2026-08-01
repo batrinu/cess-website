@@ -143,17 +143,17 @@ export default function Cookie() {
                     onClick={() => scrollToSection(s.id)}
                     className="font-body text-sm text-left w-full transition-colors duration-300"
                     style={{
-                      color: activeSection === s.id ? '#c9a87c' : '#64748b',
+                      color: activeSection === s.id ? 'var(--copper-ink)' : 'var(--text-muted)',
                       fontWeight: activeSection === s.id ? 500 : 400,
                     }}
                     onMouseEnter={(e) => {
                       if (activeSection !== s.id) {
-                        e.currentTarget.style.color = '#c9a87c'
+                        e.currentTarget.style.color = 'var(--copper-ink)'
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (activeSection !== s.id) {
-                        e.currentTarget.style.color = '#64748b'
+                        e.currentTarget.style.color = 'var(--text-muted)'
                       }
                     }}
                   >
@@ -189,7 +189,7 @@ export default function Cookie() {
                   className="font-body"
                   style={{
                     fontSize: '1rem',
-                    color: '#64748b',
+                    color: 'var(--text-muted)',
                     lineHeight: 1.8,
                   }}
                 >
@@ -216,7 +216,7 @@ export default function Cookie() {
                   className="font-body"
                   style={{
                     fontSize: '1rem',
-                    color: '#64748b',
+                    color: 'var(--text-muted)',
                     lineHeight: 1.8,
                   }}
                 >
@@ -243,7 +243,7 @@ export default function Cookie() {
                   className="font-body"
                   style={{
                     fontSize: '1rem',
-                    color: '#64748b',
+                    color: 'var(--text-muted)',
                     lineHeight: 1.8,
                   }}
                 >
@@ -270,7 +270,7 @@ export default function Cookie() {
                   className="font-body"
                   style={{
                     fontSize: '1rem',
-                    color: '#64748b',
+                    color: 'var(--text-muted)',
                     lineHeight: 1.8,
                   }}
                 >
@@ -297,7 +297,7 @@ export default function Cookie() {
                   className="font-body"
                   style={{
                     fontSize: '1rem',
-                    color: '#64748b',
+                    color: 'var(--text-muted)',
                     lineHeight: 1.8,
                   }}
                 >
@@ -324,7 +324,7 @@ export default function Cookie() {
                   className="font-body"
                   style={{
                     fontSize: '1rem',
-                    color: '#64748b',
+                    color: 'var(--text-muted)',
                     lineHeight: 1.8,
                   }}
                 >
@@ -351,7 +351,7 @@ export default function Cookie() {
                   className="font-body"
                   style={{
                     fontSize: '1rem',
-                    color: '#64748b',
+                    color: 'var(--text-muted)',
                     lineHeight: 1.8,
                   }}
                 >
@@ -378,7 +378,7 @@ export default function Cookie() {
                   className="font-body"
                   style={{
                     fontSize: '1rem',
-                    color: '#64748b',
+                    color: 'var(--text-muted)',
                     lineHeight: 1.8,
                   }}
                 >

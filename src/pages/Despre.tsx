@@ -155,10 +155,10 @@ function CTAGhost({ children, href }: { children: React.ReactNode; href?: string
 function AppMockup() {
   const statusIcon = (status: string) => {
     if (status === 'done')
-      return <CheckCircle size={14} style={{ color: '#5c7c6b' }} />
+      return <CheckCircle size={14} style={{ color: 'var(--teal-on-dark)' }} />
     if (status === 'warning')
       return <AlertTriangle size={14} style={{ color: '#c9a87c' }} />
-    return <AlertTriangle size={14} style={{ color: '#c94c4c' }} />
+    return <AlertTriangle size={14} style={{ color: 'var(--error-on-dark)' }} />
   }
 
   const statusLabel = (status: string) => {
@@ -168,9 +168,12 @@ function AppMockup() {
   }
 
   const statusColor = (status: string) => {
-    if (status === 'done') return '#5c7c6b'
+    // These pills render on --charcoal; the base --teal/--error/--copper
+    // tokens are 3.28/3.33/7.77:1 there, so the first two use their
+    // on-dark companions.
+    if (status === 'done') return 'var(--teal-on-dark)'
     if (status === 'warning') return '#c9a87c'
-    return '#c94c4c'
+    return 'var(--error-on-dark)'
   }
 
   return (
@@ -223,7 +226,7 @@ function AppMockup() {
                 style={{
                   backgroundColor:
                     item.status === 'alert' ? 'rgba(201,76,76,0.15)' : 'rgba(92,124,107,0.15)',
-                  color: item.status === 'alert' ? '#c94c4c' : '#5c7c6b',
+                  color: item.status === 'alert' ? 'var(--error-on-dark)' : 'var(--teal-on-dark)',
                 }}
               >
                 {item.count}
@@ -239,8 +242,8 @@ function AppMockup() {
         style={{ backgroundColor: '#0a0a0a', borderTop: '1px solid #262626' }}
       >
         <div className="flex items-center gap-2">
-          <Shield size={12} style={{ color: '#5c7c6b' }} />
-          <span className="font-body text-xs" style={{ color: '#5c7c6b' }}>
+          <Shield size={12} style={{ color: 'var(--teal-on-dark)' }} />
+          <span className="font-body text-xs" style={{ color: 'var(--teal-on-dark)' }}>
             Sistem securizat
           </span>
         </div>

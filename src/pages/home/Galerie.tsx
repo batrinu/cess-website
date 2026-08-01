@@ -104,7 +104,7 @@ export default function Galerie() {
                 />
                 <p
                   className="font-body text-sm mt-3"
-                  style={{ color: '#64748b' }}
+                  style={{ color: 'var(--text-muted)' }}
                 >
                   {item.label}
                 </p>

@@ -157,7 +157,7 @@ export default function AplicatiaCESS() {
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#c9a87c' }} />
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#5c7c6b' }} />
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#64748b' }} />
-                <span className="ml-auto font-body text-xs" style={{ color: '#64748b' }}>
+                <span className="ml-auto font-body text-xs" style={{ color: 'var(--text-muted-dark)' }}>
                   CESS App
                 </span>
               </div>
@@ -173,7 +173,7 @@ export default function AplicatiaCESS() {
                       key={i}
                       className="px-3 py-2 mb-1 font-body text-xs rounded"
                       style={{
-                        color: i === 0 ? '#f5f0eb' : '#64748b',
+                        color: i === 0 ? '#f5f0eb' : 'var(--text-muted-dark)',
                         backgroundColor: i === 0 ? 'rgba(201,168,124,0.15)' : 'transparent',
                       }}
                     >
@@ -233,7 +233,7 @@ export default function AplicatiaCESS() {
                         <span className="font-body text-xs" style={{ color: '#94a3b8' }}>
                           {doc}
                         </span>
-                        <span className="ml-auto font-body text-[10px]" style={{ color: '#64748b' }}>
+                        <span className="ml-auto font-body text-[10px]" style={{ color: 'var(--text-muted-dark)' }}>
                           Actualizat
                         </span>
                       </div>

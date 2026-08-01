@@ -439,7 +439,7 @@ export default function Contact() {
                     className="mb-6 p-4"
                     style={{ backgroundColor: 'rgba(239,68,68,0.08)', border: '1px solid #ef4444' }}
                   >
-                    <p className="font-body text-sm font-medium" style={{ color: '#ef4444' }}>
+                    <p className="font-body text-sm font-medium" style={{ color: 'var(--error-ink)' }}>
                       A apărut o eroare. Te rugăm să încerci din nou.
                     </p>
                   </div>
@@ -450,7 +450,7 @@ export default function Contact() {
                     {/* Name */}
                     <div>
                       <label htmlFor="name" style={labelStyle}>
-                        Numele tău <span style={{ color: '#ef4444' }}>*</span>
+                        Numele tău <span style={{ color: 'var(--error-ink)' }} aria-hidden="true">*</span>
                       </label>
                       <input
                         id="name"
@@ -482,7 +482,7 @@ export default function Contact() {
                     {/* Email */}
                     <div>
                       <label htmlFor="email" style={labelStyle}>
-                        Adresa ta de email <span style={{ color: '#ef4444' }}>*</span>
+                        Adresa ta de email <span style={{ color: 'var(--error-ink)' }} aria-hidden="true">*</span>
                       </label>
                       <input
                         id="email"
@@ -549,7 +549,7 @@ export default function Contact() {
                     {/* Message */}
                     <div>
                       <label htmlFor="message" style={labelStyle}>
-                        Mesajul tău <span style={{ color: '#ef4444' }}>*</span>
+                        Mesajul tău <span style={{ color: 'var(--error-ink)' }} aria-hidden="true">*</span>
                       </label>
                       <textarea
                         id="message"

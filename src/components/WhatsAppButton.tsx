@@ -26,7 +26,7 @@ export default function WhatsAppButton() {
         className="font-body text-xs font-medium px-2 py-1 rounded"
         style={{
           backgroundColor: '#25D366',
-          color: '#ffffff',
+          color: '#0a2e26',
         }}
       >
         Contactează-ne!

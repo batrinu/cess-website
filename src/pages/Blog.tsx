@@ -102,7 +102,7 @@ function NewsletterBanner({ darkBg = true }: { darkBg?: boolean }) {
 
   const bgColor = darkBg ? '#0a0a0a' : '#f5f0eb'
   const titleColor = darkBg ? '#f5f0eb' : '#000000'
-  const bodyColor = darkBg ? '#94a3b8' : '#64748b'
+  const bodyColor = darkBg ? '#94a3b8' : 'var(--text-muted)'
 
   return (
     <section
@@ -345,7 +345,7 @@ function BlogListing() {
               <div className="p-8 md:p-12">
                 <p
                   className="font-body text-xs mb-3"
-                  style={{ color: '#64748b' }}
+                  style={{ color: 'var(--text-muted)' }}
                 >
                   {ARTICLE.date}
                 </p>
@@ -357,7 +357,7 @@ function BlogListing() {
                 </h3>
                 <p
                   className="font-body text-sm mb-4 line-clamp-2"
-                  style={{ color: '#64748b', lineHeight: 1.6 }}
+                  style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}
                 >
                   {ARTICLE.excerpt}
                 </p>
@@ -526,7 +526,7 @@ function BlogArticle({ article }: { article: ArticleData }) {
           {/* Intro */}
           <p
             className="animate-body font-body text-lg mb-12"
-            style={{ color: '#64748b', lineHeight: 1.8 }}
+            style={{ color: 'var(--text-muted)', lineHeight: 1.8 }}
           >
             {article.intro}
           </p>
@@ -542,7 +542,7 @@ function BlogArticle({ article }: { article: ArticleData }) {
               </h2>
               <p
                 className="font-body text-lg"
-                style={{ color: '#64748b', lineHeight: 1.8 }}
+                style={{ color: 'var(--text-muted)', lineHeight: 1.8 }}
               >
                 {section.body}
               </p>

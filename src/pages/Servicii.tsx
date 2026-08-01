@@ -547,7 +547,7 @@ function ServiceSection({
                 />
                 <p
                   className="font-body text-sm leading-relaxed"
-                  style={{ color: isDark ? '#d4b896' : '#8b7355' }}
+                  style={{ color: isDark ? '#d4b896' : 'var(--copper-ink)' }}
                 >
                   {service.callout}
                 </p>

@@ -129,7 +129,7 @@ export default function Testimoniale() {
               </p>
               <p
                 className="font-body text-sm"
-                style={{ color: '#64748b' }}
+                style={{ color: 'var(--text-muted-dark)' }}
               >
                 {t.title}
               </p>

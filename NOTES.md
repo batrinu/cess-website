@@ -31,27 +31,36 @@ requirement.
 
 ---
 
-## 2. Contrast remediation — copper done, greys outstanding
+## 2. Contrast remediation — DONE
 
-**Done:**
-- Form error text `#ef4444` → `#b3261e` (was 3.32:1 on pearl, now 5.77:1).
-- Copper on light grounds → new `--copper-ink: #7a5c2e` (5.46:1 on pearl, 6.18:1 on
-  white). Applied only where the rendered DOM measured a failure, across all nine
-  routes; `#c9a87c` is untouched on dark grounds and for fills/rules/borders.
-  Link hovers no longer go *lighter* (`#d4b896`, 1.89:1 on white) — they darken.
-  Re-measured after the change: zero copper failures on any route.
+Every text/background pair on all nine routes now meets WCAG 2.1 AA, verified by
+measuring computed colour against effective background in a real browser rather than
+by reading the source.
 
-**Still outstanding:**
+Ground-aware tokens were introduced in `src/index.css`, because the same value cannot
+serve both grounds — `#64748b` was 4.20:1 on pearl *and* 3.66:1 on graphite:
 
-| Colour | Ground | Ratio | Where |
-|---|---|---|---|
-| `#64748b` | pearl | 4.20:1 | 46 uses — the entire body copy of Termeni, Confidențialitate, Cookie |
-| `#64748b` | `#000` | 4.41:1 | same token on dark sections |
-| `#5c7c6b` teal | pearl | 4.08:1 | 13 uses |
+| Token | Value | For |
+|---|---|---|
+| `--copper-ink` | `#7a5c2e` | copper text on light — 5.46:1 on pearl, 6.18:1 on white |
+| `--text-muted` | `#5a687d` | muted text on light — 5.00:1 on pearl |
+| `--text-muted-dark` | `#94a3b8` | muted text on dark — 6.79:1 on graphite |
+| `--teal-on-dark` | `#8bb39c` | status pills on charcoal — 6.50:1 |
+| `--error-on-dark` | `#e08585` | status pills on charcoal — 5.67:1 |
+| `--error-ink` | `#b3261e` | error text on light — 5.77:1 on pearl |
 
-Suggested replacement for the muted body grey: `#5a687d` → 5.00:1 on pearl (vs 4.20
-today), minimal visual change. This one is a bigger sweep than copper was, because it
-is the running body text of the three legal pages.
+Also fixed along the way: link hovers that went *lighter* (`#d4b896`, 1.89:1 on white)
+now darken; policy links are permanently underlined rather than distinguished by
+colour alone (1.4.1 Use of Color); and the WhatsApp label was white on `#25D366`
+(1.98:1) — the brand green is kept and the text darkened to `#0a2e26` (7.4:1).
+
+**Method note for anyone repeating this:** two rounds of false positives came from
+static analysis — a collapsed mobile menu with a 0×0 rect, and a transparent navbar
+over a dark hero that a naive parent-walk resolved to white. Measure the rendered DOM,
+skip zero-size nodes, and fall back to the body background, not to white.
+
+`#c9a87c`, `#5c7c6b` and `#c94c4c` remain correct and unchanged on dark grounds and
+for fills, rules, borders and swatches.
 
 ---
 

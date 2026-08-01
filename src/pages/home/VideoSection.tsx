@@ -55,7 +55,7 @@ export default function VideoSection() {
           </h2>
           <p
             className="animate-in font-body text-lg max-w-[700px] mx-auto"
-            style={{ color: '#64748b', lineHeight: 1.7, willChange: 'transform, opacity' }}
+            style={{ color: 'var(--text-muted-dark)', lineHeight: 1.7, willChange: 'transform, opacity' }}
           >
             Urmărește prezentarea noastră și află cum CESS simplifică conformarea pentru afacerea ta.
           </p>
@@ -87,7 +87,7 @@ export default function VideoSection() {
             />
             <p
               className="font-body text-base"
-              style={{ color: '#64748b' }}
+              style={{ color: 'var(--text-muted-dark)' }}
             >
               Video prezentare — în curând
             </p>
