@@ -1,4 +1,4 @@
-import { CheckCircle, AlertTriangle, Shield, ArrowRight, Phone } from 'lucide-react'
+import { CheckCircle, AlertTriangle, Shield, ArrowRight, ArrowUpRight, Phone } from 'lucide-react'
 import Container from '@/components/site/Container'
 import Section from '@/components/site/Section'
 import SectionHeading from '@/components/site/SectionHeading'
@@ -256,7 +256,12 @@ export default function Despre() {
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-4">
-                  <ActionLink href="tel:+40723926446" variant="light">
+                  <ActionLink href="https://app.cess.ro" target="_blank" variant="light">
+                    Încearcă demo gratuit
+                    <ArrowUpRight size={16} aria-hidden="true" />
+                    <span className="sr-only"> (se deschide într-o filă nouă)</span>
+                  </ActionLink>
+                  <ActionLink href="tel:+40723926446" variant="light-outline">
                     <Phone size={16} aria-hidden="true" />
                     SUNĂ ACUM
                   </ActionLink>

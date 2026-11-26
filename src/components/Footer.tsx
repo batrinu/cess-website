@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { Phone, Mail, MapPin, Facebook, Linkedin } from 'lucide-react'
+import { Phone, Mail, MapPin, Facebook, Linkedin, ArrowUpRight } from 'lucide-react'
 import Container from '@/components/site/Container'
 
 const quickLinks = [
@@ -52,6 +52,18 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <a
+                  href="https://app.cess.ro"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 py-1 font-body text-sm text-copper-light underline-offset-4 transition-colors duration-200 hover:text-on-dark hover:underline"
+                >
+                  Aplicația CESS (Demo)
+                  <ArrowUpRight size={14} aria-hidden="true" />
+                  <span className="sr-only"> (se deschide într-o filă nouă)</span>
+                </a>
+              </li>
             </ul>
           </div>
 

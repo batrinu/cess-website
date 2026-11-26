@@ -1,3 +1,4 @@
+import { ArrowUpRight } from 'lucide-react'
 import ActionLink from '@/components/site/ActionLink'
 import Container from '@/components/site/Container'
 import Reveal from '@/components/site/Reveal'
@@ -53,8 +54,10 @@ export default function AplicatiaCESS() {
               </p>
 
               <div className="mt-9 flex flex-wrap gap-4">
-                <ActionLink to="/contact" variant="light">
+                <ActionLink href="https://app.cess.ro" target="_blank" variant="light">
                   Demo gratuit
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                  <span className="sr-only"> (se deschide într-o filă nouă)</span>
                 </ActionLink>
                 <ActionLink to="/servicii" variant="light-outline">
                   Află mai multe

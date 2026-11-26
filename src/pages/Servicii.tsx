@@ -9,6 +9,7 @@ import {
   Flame,
   Check,
   Lightbulb,
+  ArrowUpRight,
 } from 'lucide-react'
 import type { LucideProps } from 'lucide-react'
 import Container from '@/components/site/Container'
@@ -648,9 +649,16 @@ export default function Servicii() {
                 jumătate!
               </p>
 
-              <ActionLink to="/contact" variant="light">
-                Contactează-ne
-              </ActionLink>
+              <div className="flex flex-wrap gap-4">
+                <ActionLink href="https://app.cess.ro" target="_blank" variant="light">
+                  Încearcă demo gratuit
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                  <span className="sr-only"> (se deschide într-o filă nouă)</span>
+                </ActionLink>
+                <ActionLink to="/contact" variant="light-outline">
+                  Contactează-ne
+                </ActionLink>
+              </div>
             </div>
           </Reveal>
         </Container>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useLocation } from 'react-router'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ArrowUpRight } from 'lucide-react'
 import Container from '@/components/site/Container'
 import ActionLink from '@/components/site/ActionLink'
 import { useModalDialog } from '@/hooks/useModalDialog'
@@ -95,7 +95,7 @@ export default function Navbar() {
             CESS
           </Link>
 
-          <div className="hidden items-center gap-6 md:flex lg:gap-8">
+          <div className="hidden items-center gap-5 md:flex xl:gap-8">
             {navLinks.map((link) => {
               const isActive = isRouteActive(location.pathname, link.path)
               return (
@@ -121,12 +121,24 @@ export default function Navbar() {
             })}
           </div>
 
-          <ActionLink
-            to="/contact"
-            className="hidden min-h-[44px] whitespace-nowrap px-5 py-2.5 md:inline-flex"
-          >
-            Consultație Gratuită
-          </ActionLink>
+          <div className="hidden items-center gap-2.5 md:flex">
+            <ActionLink
+              href="https://app.cess.ro"
+              target="_blank"
+              variant="secondary"
+              className="hidden min-h-[44px] whitespace-nowrap px-4 py-2.5 lg:inline-flex"
+            >
+              Demo Aplicație
+              <ArrowUpRight size={15} aria-hidden="true" />
+              <span className="sr-only"> (se deschide într-o filă nouă)</span>
+            </ActionLink>
+            <ActionLink
+              to="/contact"
+              className="min-h-[44px] whitespace-nowrap px-5 py-2.5"
+            >
+              Consultație Gratuită
+            </ActionLink>
+          </div>
 
           <button
             ref={toggleBtnRef}
@@ -198,13 +210,26 @@ export default function Navbar() {
                   })}
                 </div>
 
-                <ActionLink
-                  to="/contact"
-                  className="mt-4 w-full"
-                  onClick={closeMobile}
-                >
-                  Consultație Gratuită
-                </ActionLink>
+                <div className="mt-6 flex flex-col gap-3">
+                  <ActionLink
+                    href="https://app.cess.ro"
+                    target="_blank"
+                    variant="secondary"
+                    className="w-full"
+                    onClick={closeMobile}
+                  >
+                    Demo Aplicație
+                    <ArrowUpRight size={16} aria-hidden="true" />
+                    <span className="sr-only"> (se deschide într-o filă nouă)</span>
+                  </ActionLink>
+                  <ActionLink
+                    to="/contact"
+                    className="w-full"
+                    onClick={closeMobile}
+                  >
+                    Consultație Gratuită
+                  </ActionLink>
+                </div>
               </div>
             </div>,
             document.body,
