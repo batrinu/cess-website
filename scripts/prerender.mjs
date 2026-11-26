@@ -13,6 +13,8 @@ const HERO_IMAGE_PRELOADS = {
   '/blog/importanta-eficientei-contabilului-in-succesul-unei-afaceri': 'blog-contabilitate',
 }
 
+const ITALIC_FONT_ROUTES = new Set(['/', '/servicii', '/despre'])
+
 function escapeAttr(value) {
   return value
     .replaceAll('&', '&amp;')
@@ -142,6 +144,13 @@ async function run() {
       pageHtml = pageHtml.replace(
         '    <link rel="icon"',
         `    ${imgPreload}\n    <link rel="icon"`,
+      )
+    }
+
+    if (ITALIC_FONT_ROUTES.has(route)) {
+      pageHtml = pageHtml.replace(
+        '<link rel="preload" as="font" type="font/woff2" href="/fonts/inter.woff2" crossorigin />',
+        '<link rel="preload" as="font" type="font/woff2" href="/fonts/inter.woff2" crossorigin />\n    <link rel="preload" as="font" type="font/woff2" href="/fonts/source-serif-4-italic.woff2" crossorigin />',
       )
     }
 
