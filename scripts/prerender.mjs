@@ -83,7 +83,7 @@ async function run() {
         modulePreloads,
       )}.forEach(function(u){var l=document.createElement('link');l.rel='modulepreload';l.crossOrigin='';l.href=u;h.appendChild(l);});var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src=${JSON.stringify(
         entryModuleSrc,
-      )};document.body.appendChild(s);}if(typeof requestAnimationFrame==='function'){requestAnimationFrame(function(){setTimeout(b,0);});}setTimeout(b,200);})();</script>`
+      )};document.body.appendChild(s);}if(typeof requestAnimationFrame==='function'){requestAnimationFrame(function(){requestAnimationFrame(function(){setTimeout(b,0);});});}setTimeout(b,200);})();</script>`
     : ''
 
   for (const route of PRERENDER_ROUTES) {
