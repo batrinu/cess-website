@@ -55,6 +55,37 @@ async function run() {
     }
   }
 
+  let entryModuleSrc = null
+  const modulePreloads = []
+
+  template = template.replace(
+    /\s*<script\b[^>]*type=["']module["'][^>]*><\/script>/gi,
+    (tag) => {
+      const srcMatch = tag.match(/\bsrc=["'](\/assets\/[^"']+\.js)["']/i)
+      if (!srcMatch) return tag
+      entryModuleSrc = srcMatch[1]
+      return ''
+    },
+  )
+
+  template = template.replace(
+    /\s*<link\b[^>]*rel=["']modulepreload["'][^>]*>/gi,
+    (tag) => {
+      const hrefMatch = tag.match(/\bhref=["'](\/assets\/[^"']+\.js)["']/i)
+      if (!hrefMatch) return tag
+      modulePreloads.push(hrefMatch[1])
+      return ''
+    },
+  )
+
+  const deferredBootScript = entryModuleSrc
+    ? `<script>(function(){var d=false;function b(){if(d)return;d=true;var h=document.head;${JSON.stringify(
+        modulePreloads,
+      )}.forEach(function(u){var l=document.createElement('link');l.rel='modulepreload';l.crossOrigin='';l.href=u;h.appendChild(l);});var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src=${JSON.stringify(
+        entryModuleSrc,
+      )};document.body.appendChild(s);}if(typeof requestAnimationFrame==='function'){requestAnimationFrame(function(){setTimeout(b,0);});}setTimeout(b,200);})();</script>`
+    : ''
+
   for (const route of PRERENDER_ROUTES) {
     const appHtml = render(route)
     const { title, description } = metaForPath(route)
@@ -115,11 +146,14 @@ async function run() {
     }
 
     pageHtml = pageHtml.replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`)
+    if (deferredBootScript) {
+      pageHtml = pageHtml.replace('</body>', `    ${deferredBootScript}\n  </body>`)
+    }
 
     const outPath =
       route === '/'
         ? path.join(DIST_DIR, 'index.html')
-        : path.join(DIST_DIR, route.replace(/^\//, ''), 'index.html')
+        : path.join(DIST_DIR, `${route.replace(/^\//, '')}.html`)
 
     fs.mkdirSync(path.dirname(outPath), { recursive: true })
     fs.writeFileSync(outPath, pageHtml, 'utf-8')
