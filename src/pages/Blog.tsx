@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ArrowLeft } from 'lucide-react'
-
-gsap.registerPlugin(ScrollTrigger)
+import { ArrowLeft, ArrowRight } from 'lucide-react'
+import Container from '@/components/site/Container'
+import Section from '@/components/site/Section'
+import SectionHeading from '@/components/site/SectionHeading'
+import ActionLink, { actionClasses } from '@/components/site/ActionLink'
+import Reveal from '@/components/site/Reveal'
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -64,33 +65,12 @@ const ARTICLE: ArticleData = {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Newsletter sub-component (shared by listing + article)             */
+/*  Newsletter sub-component                                         */
 /* ------------------------------------------------------------------ */
 
-function NewsletterBanner({ darkBg = true }: { darkBg?: boolean }) {
-  const sectionRef = useRef<HTMLElement>(null)
+function NewsletterBanner() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
-
-  useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        section.querySelectorAll('.animate-in'),
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-          scrollTrigger: { trigger: section, start: 'top 85%' },
-        }
-      )
-    }, section)
-    return () => ctx.revert()
-  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -100,94 +80,61 @@ function NewsletterBanner({ darkBg = true }: { darkBg?: boolean }) {
     }
   }
 
-  const bgColor = darkBg ? '#0a0a0a' : '#f5f0eb'
-  const titleColor = darkBg ? '#f5f0eb' : '#000000'
-  const bodyColor = darkBg ? '#94a3b8' : 'var(--text-muted)'
-
   return (
-    <section
-      ref={sectionRef}
-      className="py-24 md:py-32"
-      style={{ backgroundColor: bgColor }}
-    >
-      <div className="content-max-width">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
-          {/* Left */}
-          <div className="lg:col-span-3">
-            <h3
-              className="animate-in font-display text-2xl md:text-3xl font-normal mb-4"
-              style={{ color: titleColor }}
-            >
+    <Section tone="navy">
+      <Container>
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          <Reveal className="lg:col-span-7">
+            <h2 className="display-3 text-on-dark">
               Abonează-te la newsletter
-            </h3>
-            <p
-              className="animate-in font-body text-base"
-              style={{ color: bodyColor, lineHeight: 1.6 }}
-            >
+            </h2>
+            <p className="mt-3 max-w-[54ch] text-base leading-7 text-on-dark-muted">
               Primești noutăți legislative și sfaturi utile direct în inbox.
             </p>
-          </div>
+          </Reveal>
 
-          {/* Right */}
-          <div className="lg:col-span-2">
+          <Reveal delay={100} className="lg:col-span-5">
             {submitted ? (
               <div
-                className="animate-in py-4 px-6"
-                style={{ backgroundColor: 'rgba(92,124,107,0.12)' }}
+                role="status"
+                className="border border-success-dark/40 bg-navy-elevated px-6 py-4"
               >
-                <p
-                  className="font-body text-sm font-medium"
-                  style={{ color: '#5c7c6b' }}
-                >
+                <p className="font-body text-sm font-medium text-success-dark">
                   Mulțumim! Te-ai abonat cu succes.
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="animate-in flex flex-col sm:flex-row gap-0">
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-3 sm:flex-row sm:gap-0"
+              >
+                <label htmlFor="blog-newsletter-email" className="sr-only">
+                  Adresa ta de email
+                </label>
                 <input
+                  id="blog-newsletter-email"
                   type="email"
                   value={email}
                   onChange={(ev) => setEmail(ev.target.value)}
                   placeholder="Adresa ta de email"
                   required
-                  className="flex-1 font-body text-base px-4 py-3.5 outline-none transition-colors duration-300"
-                  style={{
-                    backgroundColor: darkBg ? '#1a1a1a' : '#ffffff',
-                    border: '1px solid #262626',
-                    color: darkBg ? '#f5f0eb' : '#000000',
-                  }}
-                  onFocus={(ev) => {
-                    ev.currentTarget.style.borderColor = '#c9a87c'
-                  }}
-                  onBlur={(ev) => {
-                    ev.currentTarget.style.borderColor = '#262626'
-                  }}
+                  className="min-h-[48px] flex-1 rounded-[2px] border border-rule-dark bg-navy-elevated px-4 py-3 font-body text-base text-on-dark placeholder:text-on-dark-muted transition-colors focus:border-copper-light focus-visible:relative focus-visible:z-10 sm:rounded-r-none"
                 />
                 <button
                   type="submit"
-                  className="font-body text-[0.8125rem] font-semibold uppercase tracking-[0.1em] px-6 py-3.5 transition-all duration-300 hover:-translate-y-0.5"
-                  style={{
-                    backgroundColor: '#c9a87c',
-                    color: '#000000',
-                  }}
-                  onMouseEnter={(ev) => {
-                    ev.currentTarget.style.backgroundColor = '#d4b896'
-                    ev.currentTarget.style.boxShadow =
-                      '0 4px 20px rgba(201,168,124,0.3)'
-                  }}
-                  onMouseLeave={(ev) => {
-                    ev.currentTarget.style.backgroundColor = '#c9a87c'
-                    ev.currentTarget.style.boxShadow = 'none'
-                  }}
+                  className={actionClasses(
+                    'light',
+                    'shrink-0 sm:rounded-l-none',
+                  )}
                 >
                   ABONEAZĂ-TE
                 </button>
               </form>
             )}
-          </div>
+          </Reveal>
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }
 
@@ -196,185 +143,93 @@ function NewsletterBanner({ darkBg = true }: { darkBg?: boolean }) {
 /* ------------------------------------------------------------------ */
 
 function BlogListing() {
-  const heroRef = useRef<HTMLElement>(null)
-  const gridRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const hero = heroRef.current
-    const grid = gridRef.current
-    if (!hero || !grid) return
-
-    const ctx = gsap.context(() => {
-      /* Hero animations */
-      gsap.fromTo(
-        hero.querySelectorAll('.animate-in'),
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        }
-      )
-
-      /* Grid card animation */
-      const card = grid.querySelector('.article-card')
-      if (card) {
-        gsap.fromTo(
-          card,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-            scrollTrigger: { trigger: grid, start: 'top 85%' },
-          }
-        )
-      }
-    }, hero)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
     <div>
-      {/* --- Hero --- */}
-      <section
-        ref={heroRef}
-        className="relative flex items-center justify-center"
-        style={{
-          backgroundColor: '#000000',
-          minHeight: '50vh',
-          paddingTop: '72px',
-        }}
-      >
-        <div className="content-max-width py-24 md:py-32 text-center">
-          <p
-            className="animate-in font-body text-xs font-semibold uppercase mb-6"
-            style={{ color: '#c9a87c', letterSpacing: '0.08em' }}
-          >
-            BLOG CESS
-          </p>
-          <h1
-            className="animate-in font-display font-normal mb-8"
-            style={{
-              color: '#f5f0eb',
-              fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-              lineHeight: 1.1,
-              letterSpacing: '-0.01em',
-            }}
-          >
+      {/* --- Light Hero --- */}
+      <section className="border-b border-rule bg-alabaster pt-28 pb-14 md:pt-36 md:pb-16">
+        <Container>
+          <p className="editorial-eyebrow mb-4 text-copper-ink">BLOG CESS</p>
+          <h1 className="display-2 max-w-[24ch] text-ink">
             Sfaturi clare și soluții smart pentru afacerea ta
           </h1>
 
-          <div className="animate-in mx-auto" style={{ maxWidth: '750px' }}>
-            <p
-              className="font-body text-lg mb-4"
-              style={{ color: '#94a3b8', lineHeight: 1.7 }}
-            >
+          <div className="mt-6 max-w-[65ch] space-y-4 text-base leading-7 text-ink-muted md:text-lg md:leading-8">
+            <p>
               Fie că ești la început de drum sau administrezi deja un business
-              matur, <strong style={{ color: '#f5f0eb' }}>provocările administrative, fiscale și legale</strong> sunt reale și
-              constante. De aceea, am creat acest spațiu cu <strong style={{ color: '#f5f0eb' }}>resurse clare</strong>, scrise
-              de specialiști care lucrează zilnic în aceste domenii –
+              matur,{' '}
+              <strong className="font-semibold text-ink">
+                provocările administrative, fiscale și legale
+              </strong>{' '}
+              sunt reale și constante. De aceea, am creat acest spațiu cu{' '}
+              <strong className="font-semibold text-ink">resurse clare</strong>,
+              scrise de specialiști care lucrează zilnic în aceste domenii –
               contabilitate, SSM, GDPR, HR și nu numai.
             </p>
-            <p
-              className="font-body text-lg mb-6"
-              style={{ color: '#94a3b8', lineHeight: 1.7 }}
-            >
-              Aici găsești <strong style={{ color: '#f5f0eb' }}>articole scurte, aplicate și actualizate</strong>, care te
-              ajută să înțelegi mai bine <strong style={{ color: '#f5f0eb' }}>obligațiile tale ca antreprenor</strong>, să iei
-              decizii informate și să economisești timp, bani și stres.
+            <p>
+              Aici găsești{' '}
+              <strong className="font-semibold text-ink">
+                articole scurte, aplicate și actualizate
+              </strong>
+              , care te ajută să înțelegi mai bine{' '}
+              <strong className="font-semibold text-ink">
+                obligațiile tale ca antreprenor
+              </strong>
+              , să iei decizii informate și să economisești timp, bani și stres.
             </p>
-            <p
-              className="font-body text-base font-medium"
-              style={{ color: '#c9a87c' }}
-            >
-              Fără teorii inutile. Doar <strong>informații relevante și soluții practice</strong>,
-              direct de la experți.
+            <p className="font-medium text-copper-ink">
+              Fără teorii inutile. Doar{' '}
+              <strong className="font-semibold text-ink">
+                informații relevante și soluții practice
+              </strong>
+              , direct de la experți.
             </p>
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* --- Article Grid --- */}
-      <section
-        ref={gridRef}
-        className="section-padding"
-        style={{ backgroundColor: '#f5f0eb' }}
-      >
-        <div className="content-max-width">
-          <div
-            className="grid gap-8"
-            style={{
-              gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
-            }}
-          >
-            {/* Article Card */}
-            <Link
-              to={`/blog/${ARTICLE.slug}`}
-              className="article-card group block transition-all duration-300 hover:-translate-y-1"
-              style={{
-                backgroundColor: '#ffffff',
-                border: '1px solid #e8e0d8',
-                boxShadow: 'none',
-              }}
-              onMouseEnter={(ev) => {
-                ev.currentTarget.style.boxShadow =
-                  '0 8px 32px rgba(0,0,0,0.08)'
-              }}
-              onMouseLeave={(ev) => {
-                ev.currentTarget.style.boxShadow = 'none'
-              }}
-            >
-              {/* Image */}
-              <div
-                className="w-full overflow-hidden"
-                style={{ aspectRatio: '16 / 10' }}
+      {/* --- Magazine Feature --- */}
+      <Section tone="vellum">
+        <Container>
+          <Reveal>
+            <article className="grid items-center gap-8 border-y border-rule py-10 md:grid-cols-12">
+              <Link
+                to={`/blog/${ARTICLE.slug}`}
+                className="group block aspect-[16/10] overflow-hidden border border-rule bg-stone md:col-span-7"
               >
                 <img
                   src={ARTICLE.image}
                   alt={ARTICLE.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
-              </div>
+              </Link>
 
-              {/* Content */}
-              <div className="p-8 md:p-12">
-                <p
-                  className="font-body text-xs mb-3"
-                  style={{ color: 'var(--text-muted)' }}
-                >
+              <div className="md:col-span-5">
+                <p className="font-body text-xs font-semibold uppercase tracking-[0.12em] tabular-nums text-copper-ink">
                   {ARTICLE.date}
                 </p>
-                <h3
-                  className="font-body text-xl font-semibold mb-3"
-                  style={{ color: '#000000' }}
-                >
-                  {ARTICLE.title}
-                </h3>
-                <p
-                  className="font-body text-sm mb-4 line-clamp-2"
-                  style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}
-                >
+                <h2 className="display-3 mt-3 text-ink">
+                  <Link
+                    to={`/blog/${ARTICLE.slug}`}
+                    className="transition-colors hover:text-copper-ink"
+                  >
+                    {ARTICLE.title}
+                  </Link>
+                </h2>
+                <p className="mt-4 text-base leading-7 text-ink-muted">
                   {ARTICLE.excerpt}
                 </p>
-                <span
-                  className="inline-flex items-center gap-1 font-body text-sm font-medium transition-colors duration-300 group-hover:underline"
-                  style={{ color: 'var(--copper-ink)' }}
+                <Link
+                  to={`/blog/${ARTICLE.slug}`}
+                  className="mt-6 inline-flex min-h-[44px] items-center gap-2 font-body text-sm font-semibold text-navy transition-colors hover:text-copper-ink"
                 >
-                  Continuă să citești
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
-                </span>
+                  <span>Continuă să citești</span>
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Link>
               </div>
-            </Link>
-          </div>
-        </div>
-      </section>
+            </article>
+          </Reveal>
+        </Container>
+      </Section>
 
       {/* --- Newsletter --- */}
       <NewsletterBanner />
@@ -387,251 +242,112 @@ function BlogListing() {
 /* ------------------------------------------------------------------ */
 
 function BlogArticle({ article }: { article: ArticleData }) {
-  const headerRef = useRef<HTMLElement>(null)
-  const bodyRef = useRef<HTMLElement>(null)
-  const ctaRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const header = headerRef.current
-    const body = bodyRef.current
-    const cta = ctaRef.current
-    if (!header || !body || !cta) return
-
-    const ctx = gsap.context(() => {
-      /* Header animations */
-      gsap.fromTo(
-        header.querySelectorAll('.animate-header'),
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        }
-      )
-
-      gsap.fromTo(
-        header.querySelector('.animate-image'),
-        { opacity: 0, scale: 0.98 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 1,
-          delay: 0.3,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        }
-      )
-
-      /* Body paragraphs */
-      gsap.fromTo(
-        body.querySelectorAll('.animate-body'),
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-          scrollTrigger: { trigger: body, start: 'top 85%' },
-        }
-      )
-
-      /* CTA section */
-      gsap.fromTo(
-        cta.querySelectorAll('.animate-in'),
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-          scrollTrigger: { trigger: cta, start: 'top 85%' },
-        }
-      )
-    })
-
-    return () => ctx.revert()
-  }, [])
-
   return (
     <div>
-      {/* --- Article Header --- */}
+      {/* --- Navy Article Header --- */}
       <section
-        ref={headerRef}
-        style={{ backgroundColor: '#000000', paddingTop: '72px' }}
+        data-surface="dark"
+        className="bg-navy pt-28 pb-14 text-on-dark md:pt-36 md:pb-20"
       >
-        <div className="content-max-width pt-24 md:pt-32 pb-16 md:pb-24">
-          <div className="mx-auto" style={{ maxWidth: '800px' }}>
-            {/* Back link */}
+        <Container>
+          <div className="mx-auto max-w-4xl">
             <Link
               to="/blog"
-              className="animate-header inline-flex items-center gap-2 font-body text-sm mb-6 transition-colors duration-300"
-              style={{ color: '#94a3b8' }}
-              onMouseEnter={(ev) => {
-                ev.currentTarget.style.color = '#c9a87c'
-              }}
-              onMouseLeave={(ev) => {
-                ev.currentTarget.style.color = '#94a3b8'
-              }}
+              className="inline-flex min-h-[44px] items-center gap-2 text-sm font-medium text-copper-light transition-colors hover:text-on-dark"
             >
-              <ArrowLeft size={16} />
+              <ArrowLeft size={16} aria-hidden="true" />
               Înapoi la blog
             </Link>
 
-            {/* Date */}
-            <p
-              className="animate-header font-body text-sm mb-4"
-              style={{ color: '#c9a87c' }}
-            >
+            <p className="mt-4 font-body text-xs font-semibold uppercase tracking-[0.12em] tabular-nums text-on-dark-muted">
               {article.fullDate}
             </p>
 
-            {/* Title */}
-            <h1
-              className="animate-header font-display font-normal mb-8"
-              style={{
-                color: '#f5f0eb',
-                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                lineHeight: 1.1,
-                letterSpacing: '-0.01em',
-              }}
-            >
+            <h1 className="display-2 mt-4 max-w-4xl text-on-dark">
               {article.title}
             </h1>
 
-            {/* Featured Image */}
-            <div className="animate-image w-full overflow-hidden max-h-[400px]">
+            <div className="mt-10 aspect-[16/9] overflow-hidden border border-rule-dark bg-navy-elevated">
               <img
                 src={article.image}
                 alt={article.title}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
+                fetchPriority="high"
               />
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* --- Article Body --- */}
-      <section
-        ref={bodyRef}
-        className="py-24 md:py-32"
-        style={{ backgroundColor: '#f5f0eb' }}
-      >
-        <div
-          className="mx-auto px-4 md:px-8"
-          style={{ maxWidth: '720px' }}
-        >
-          {/* Intro */}
-          <p
-            className="animate-body font-body text-lg mb-12"
-            style={{ color: 'var(--text-muted)', lineHeight: 1.8 }}
-          >
-            {article.intro}
-          </p>
+      {/* --- Prose Body --- */}
+      <Section tone="alabaster">
+        <Container>
+          <div className="mx-auto max-w-[68ch]">
+            <p className="text-lg leading-8 text-ink-muted">{article.intro}</p>
 
-          {/* Sections */}
-          {article.sections.map((section, index) => (
-            <div key={index} className="animate-body mb-12">
-              <h2
-                className="font-body text-2xl font-semibold mb-4"
-                style={{ color: '#000000', marginTop: '48px' }}
-              >
-                {section.heading}
-              </h2>
-              <p
-                className="font-body text-lg"
-                style={{ color: 'var(--text-muted)', lineHeight: 1.8 }}
-              >
-                {section.body}
+            {article.sections.map((section, index) => (
+              <div key={index}>
+                <h2 className="mt-12 mb-4 font-display text-2xl text-ink md:text-3xl">
+                  {section.heading}
+                </h2>
+                <p className="text-lg leading-8 text-ink-muted">
+                  {section.body}
+                </p>
+              </div>
+            ))}
+
+            <p className="mt-12 border-t border-rule pt-8 text-lg font-medium leading-8 text-ink">
+              {article.conclusion}
+            </p>
+
+            <div
+              data-surface="dark"
+              className="mt-14 bg-navy p-8 text-on-dark md:p-10"
+            >
+              <p className="text-lg leading-8 text-on-dark-muted">
+                Dacă îți dorești{' '}
+                <strong className="font-semibold text-on-dark">
+                  servicii contabile profesionale și eficiente în Constanța
+                </strong>
+                , echipa{' '}
+                <strong className="font-semibold text-on-dark">
+                  CESS TRUST
+                </strong>{' '}
+                este aici pentru tine. Contactează-ne pentru o{' '}
+                <strong className="font-semibold text-on-dark">
+                  consultanță gratuită
+                </strong>{' '}
+                și descoperă cum putem face echipă pentru succesul afacerii
+                tale.
               </p>
+              <div className="mt-7">
+                <ActionLink to="/contact" variant="light">
+                  CONTACTEAZĂ-NE
+                </ActionLink>
+              </div>
             </div>
-          ))}
-
-          {/* Conclusion */}
-          <p
-            className="animate-body font-body text-lg font-medium mt-16"
-            style={{ color: '#000000', lineHeight: 1.8 }}
-          >
-            {article.conclusion}
-          </p>
-
-          {/* Article CTA */}
-          <div
-            className="animate-body mt-16 p-8 md:p-12"
-            style={{ backgroundColor: '#0a0a0a' }}
-          >
-            <p
-              className="font-body text-lg leading-relaxed mb-8"
-              style={{ color: '#94a3b8', lineHeight: 1.7 }}
-            >
-              Dacă îți dorești <strong style={{ color: '#f5f0eb' }}>servicii contabile profesionale și eficiente în Constanța</strong>, echipa <strong style={{ color: '#f5f0eb' }}>CESS TRUST</strong> este aici pentru tine.
-              Contactează-ne pentru o <strong style={{ color: '#f5f0eb' }}>consultanță gratuită</strong> și descoperă cum
-              putem face echipă pentru succesul afacerii tale.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-block font-body text-[0.8125rem] font-semibold uppercase tracking-[0.1em] px-8 py-4 transition-all duration-300 hover:-translate-y-0.5"
-              style={{
-                backgroundColor: '#c9a87c',
-                color: '#000000',
-              }}
-              onMouseEnter={(ev) => {
-                ev.currentTarget.style.backgroundColor = '#d4b896'
-                ev.currentTarget.style.boxShadow =
-                  '0 4px 20px rgba(201,168,124,0.3)'
-              }}
-              onMouseLeave={(ev) => {
-                ev.currentTarget.style.backgroundColor = '#c9a87c'
-                ev.currentTarget.style.boxShadow = 'none'
-              }}
-            >
-              CONTACTEAZĂ-NE
-            </Link>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      {/* --- Article CTA --- */}
-      <section
-        ref={ctaRef}
-        className="py-24 md:py-32"
-        style={{ backgroundColor: '#0a0a0a' }}
-      >
-        <div className="content-max-width text-center">
-          <div className="mx-auto" style={{ maxWidth: '700px' }}>
-            <p
-              className="animate-in font-body text-lg mb-8"
-              style={{ color: '#94a3b8', lineHeight: 1.7 }}
-            >
-              Dacă îți dorești servicii contabile profesionale și eficiente în
-              Constanța, echipa CESS TRUST este aici pentru tine.
-              Contactează-ne pentru o consultanță gratuită și descoperă cum
-              putem face echipă pentru succesul afacerii tale.
-            </p>
-            <Link
-              to="/contact"
-              className="animate-in inline-block font-body text-[0.8125rem] font-semibold uppercase tracking-[0.1em] px-8 py-4 transition-all duration-300 hover:-translate-y-0.5"
-              style={{
-                backgroundColor: '#c9a87c',
-                color: '#000000',
-              }}
-              onMouseEnter={(ev) => {
-                ev.currentTarget.style.backgroundColor = '#d4b896'
-                ev.currentTarget.style.boxShadow =
-                  '0 4px 20px rgba(201,168,124,0.3)'
-              }}
-              onMouseLeave={(ev) => {
-                ev.currentTarget.style.backgroundColor = '#c9a87c'
-                ev.currentTarget.style.boxShadow = 'none'
-              }}
-            >
-              CONTACTEAZĂ-NE
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* --- Final Article Band --- */}
+      <Section tone="vellum" className="border-t border-rule">
+        <Container className="text-center">
+          <Reveal>
+            <SectionHeading
+              align="center"
+              eyebrow="CONSULTANȚĂ CONTABILĂ"
+              title="Discută direct cu echipa CESS TRUST"
+              description="Oferim servicii integrate de contabilitate, fiscalitate și conformare pentru companiile din Constanța."
+            />
+            <div className="mt-8">
+              <ActionLink to="/contact" variant="primary">
+                CONTACTEAZĂ-NE
+              </ActionLink>
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
     </div>
   )
 }

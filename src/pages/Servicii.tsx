@@ -1,8 +1,4 @@
-import { useRef } from 'react'
-import { Link } from 'react-router'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
+import type { FC, JSX } from 'react'
 import {
   Calculator,
   FileCheck,
@@ -15,14 +11,17 @@ import {
   Lightbulb,
 } from 'lucide-react'
 import type { LucideProps } from 'lucide-react'
-
-gsap.registerPlugin(ScrollTrigger)
+import Container from '@/components/site/Container'
+import Section from '@/components/site/Section'
+import SectionHeading from '@/components/site/SectionHeading'
+import ActionLink from '@/components/site/ActionLink'
+import Reveal from '@/components/site/Reveal'
 
 /* ------------------------------------------------------------------ */
 /*  Icon map                                                           */
 /* ------------------------------------------------------------------ */
 
-const serviceIcons: Record<string, React.FC<LucideProps>> = {
+const serviceIcons: Record<string, FC<LucideProps>> = {
   contabilitate: Calculator,
   fiscalitate: FileCheck,
   gdpr: Shield,
@@ -37,6 +36,7 @@ const serviceIcons: Record<string, React.FC<LucideProps>> = {
 /* ------------------------------------------------------------------ */
 
 interface ServiceData {
+  id: string
   title: string
   subtitle: string
   intro: string
@@ -47,7 +47,6 @@ interface ServiceData {
   closing: string
   ctaText: string
   ctas: { text: string; primary: boolean; to: string }[]
-  anchor: string
   layout: 'text-left' | 'text-right'
   textSpan: 5 | 6 | 7
   image?: string
@@ -59,6 +58,7 @@ interface ServiceData {
 
 const services: ServiceData[] = [
   {
+    id: 'contabilitate',
     title: 'Contabilitate financiară și de gestiune',
     subtitle: 'Control complet, fără griji contabile',
     intro:
@@ -89,11 +89,11 @@ const services: ServiceData[] = [
       },
       { text: 'CONTACTEAZĂ-NE', primary: false, to: '/contact' },
     ],
-    anchor: 'contabilitate',
     layout: 'text-left',
     textSpan: 7,
   },
   {
+    id: 'fiscalitate',
     title: 'Consultanță fiscală și depunerea declarațiilor',
     subtitle: 'Siguranță fiscală, zero surprize',
     intro:
@@ -116,11 +116,11 @@ const services: ServiceData[] = [
     ctaText:
       'Programează o discuție gratuită și vezi dacă ești 100% conform.',
     ctas: [{ text: 'Contactează-ne', primary: true, to: '/contact' }],
-    anchor: 'fiscalitate',
     layout: 'text-right',
     textSpan: 6,
   },
   {
+    id: 'gdpr',
     title: 'Protecția Datelor cu Caracter Personal (GDPR)',
     subtitle: 'Siguranță, Conformare, Liniște',
     intro:
@@ -144,12 +144,12 @@ const services: ServiceData[] = [
     ctaText:
       'Programează o discuție gratuită și vezi cum putem face lucrurile mai ușoare pentru tine.',
     ctas: [{ text: 'Contactează-ne', primary: true, to: '/contact' }],
-    anchor: 'gdpr',
     layout: 'text-left',
     textSpan: 6,
     image: '/service-gdpr.jpg',
   },
   {
+    id: 'ssm',
     title: 'Securitate și Sănătate în Muncă (SSM)',
     subtitle: 'Legal, organizat, fără hârtii inutile',
     intro:
@@ -171,12 +171,12 @@ const services: ServiceData[] = [
     ctaText:
       'Programează o discuție gratuită cu un specialist SSM și află ce pași trebuie să urmezi pentru a fi conform 100%.',
     ctas: [{ text: 'Contactează-ne', primary: true, to: '/contact' }],
-    anchor: 'ssm',
     layout: 'text-right',
     textSpan: 7,
     image: '/service-ssm.jpg',
   },
   {
+    id: 'salarizare',
     title: 'Servicii de Salarizare și Operare REGES',
     subtitle: 'HR organizat și corect',
     intro:
@@ -196,11 +196,11 @@ const services: ServiceData[] = [
     ctaText:
       'Programează o discuție gratuită și vezi cum poți simplifica administrarea resurselor umane.',
     ctas: [{ text: 'Contactează-ne', primary: true, to: '/contact' }],
-    anchor: 'salarizare',
     layout: 'text-left',
     textSpan: 7,
   },
   {
+    id: 'securitate-fizica',
     title: 'Evaluare de Risc la Securitate Fizică',
     subtitle: 'Prevenție reală, nu doar formală',
     intro:
@@ -220,11 +220,11 @@ const services: ServiceData[] = [
     ctaText:
       'Programează o discuție gratuită cu un consultant în securitate și vezi ce ai de făcut pentru a-ți proteja eficient spațiile, angajații și bunurile.',
     ctas: [{ text: 'Contactează-ne', primary: true, to: '/contact' }],
-    anchor: 'securitate-fizica',
     layout: 'text-right',
     textSpan: 5,
   },
   {
+    id: 'psi',
     title: 'Prevenirea și Stingerea Incendiilor (PSI)',
     subtitle: 'Siguranță reală, nu doar pe hârtie',
     intro:
@@ -245,11 +245,20 @@ const services: ServiceData[] = [
     ctaText:
       'Programează o discuție gratuită și vezi cum putem face ca siguranța să devină parte integrantă din strategia ta de conformare.',
     ctas: [{ text: 'Contactează-ne', primary: true, to: '/contact' }],
-    anchor: 'psi',
     layout: 'text-left',
     textSpan: 6,
     image: '/service-psi.jpg',
   },
+]
+
+/* ------------------------------------------------------------------ */
+/*  Hero checklist                                                     */
+/* ------------------------------------------------------------------ */
+
+const heroPoints = [
+  'Acoperim integral: contabilitate, fiscalitate, GDPR, SSM, securitate fizică, salarizare, REGES, PSI',
+  'Lucrăm digitalizat, cu trasabilitate completă',
+  'Poți colabora 100% de la distanță, prin aplicația noastră sau cu suport uman',
 ]
 
 /* ------------------------------------------------------------------ */
@@ -309,49 +318,13 @@ function CTAButton({
   large?: boolean
 }) {
   return (
-    <Link
+    <ActionLink
       to={to}
-      className={
-        'inline-block font-body font-semibold uppercase tracking-[0.1em] transition-all duration-300 hover:-translate-y-0.5' +
-        (large ? ' text-sm px-8 py-4' : ' text-[0.8125rem] px-8 py-3.5')
-      }
-      style={
-        primary
-          ? {
-              backgroundColor: '#c9a87c',
-              color: '#000000',
-              border: 'none',
-            }
-          : {
-              // The only secondary CTA sits on a --pearl section, where #c9a87c
-              // measures 1.98:1. --copper-ink is 5.46:1 on that ground.
-              backgroundColor: 'transparent',
-              color: 'var(--copper-ink)',
-              border: '1px solid var(--copper-ink)',
-            }
-      }
-      onMouseEnter={(e) => {
-        if (primary) {
-          e.currentTarget.style.backgroundColor = '#d4b896'
-          e.currentTarget.style.boxShadow =
-            '0 4px 20px rgba(201,168,124,0.3)'
-        } else {
-          e.currentTarget.style.backgroundColor = '#c9a87c'
-          e.currentTarget.style.color = '#000000'
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (primary) {
-          e.currentTarget.style.backgroundColor = '#c9a87c'
-          e.currentTarget.style.boxShadow = 'none'
-        } else {
-          e.currentTarget.style.backgroundColor = 'transparent'
-          e.currentTarget.style.color = '#c9a87c'
-        }
-      }}
+      variant={primary ? 'primary' : 'secondary'}
+      className={large ? 'min-h-[54px] px-9' : undefined}
     >
       {text}
-    </Link>
+    </ActionLink>
   )
 }
 
@@ -359,70 +332,31 @@ function CTAButton({
 /*  Helper: Parse bold markdown (**text**) into React elements         */
 /* ------------------------------------------------------------------ */
 
-function parseBold(text: string): (string | React.JSX.Element)[] {
+function parseBold(text: string): (string | JSX.Element)[] {
   const parts = text.split(/(\*\*.*?\*\*)/g)
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={i}>{part.slice(2, -2)}</strong>
+      return (
+        <strong key={i} className="font-semibold text-on-dark">
+          {part.slice(2, -2)}
+        </strong>
+      )
     }
     return part
   })
 }
 
 /* ------------------------------------------------------------------ */
-/*  Service Section — COMPLETE with intro, checkmarks, callout, etc.   */
+/*  Service Section                                                    */
 /* ------------------------------------------------------------------ */
 
 function ServiceSection({
   service,
-  isDark,
+  index,
 }: {
   service: ServiceData
-  isDark: boolean
+  index: number
 }) {
-  const sectionRef = useRef<HTMLElement>(null)
-  const textRef = useRef<HTMLDivElement>(null)
-  const iconRef = useRef<HTMLDivElement>(null)
-
-  useGSAP(
-    () => {
-      if (!textRef.current || !iconRef.current) return
-
-      const els = textRef.current.querySelectorAll('.animate-item')
-      gsap.from(els, {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      })
-
-      gsap.from(iconRef.current, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 1,
-        delay: 0.2,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      })
-    },
-    { scope: sectionRef }
-  )
-
-  const bgColor = isDark ? '#0a0a0a' : '#f5f0eb'
-  const titleColor = isDark ? '#f5f0eb' : '#000000'
-  const bodyColor = isDark ? '#94a3b8' : '#333333'
-  const subtitleColor = isDark ? '#d4b896' : '#262626'
-
   const isTextLeft = service.layout === 'text-left'
   const textSpan = service.textSpan
   const imageSpan = 12 - textSpan
@@ -435,191 +369,155 @@ function ServiceSection({
     ? textLeftImageClasses[imageSpan]
     : textRightImageClasses[imageSpan]
 
-  const IconComponent = serviceIcons[service.anchor]
-
-  /* Split intro on newlines for multi-paragraph intros */
+  const IconComponent = serviceIcons[service.id]
   const introParagraphs = service.intro.split('\n\n')
 
   return (
-    <section
-      ref={sectionRef}
-      id={service.anchor}
-      className="section-padding"
-      style={{ backgroundColor: bgColor }}
+    <Section
+      id={service.id}
+      tone={index % 2 === 0 ? 'alabaster' : 'vellum'}
+      className="scroll-mt-24 border-b border-rule"
     >
-      <div className="content-max-width">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* ── Text column ── */}
-          <div
-            ref={textRef}
-            className={textClass}
-            style={{ willChange: 'transform, opacity' }}
-          >
-            {/* Title */}
-            <h2
-              className="animate-item font-display text-[clamp(1.25rem,2vw,1.75rem)] font-medium leading-tight mb-3"
-              style={{ color: titleColor, textWrap: 'balance' }}
-            >
-              {service.title}
-            </h2>
-
-            {/* Subtitle */}
-            <p
-              className="animate-item font-body text-lg mb-6"
-              style={{ color: subtitleColor }}
-            >
-              {service.subtitle}
-            </p>
-
-            {/* Intro paragraph(s) */}
-            {introParagraphs.map((para, idx) => (
+      <Container>
+        <Reveal>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            {/* ── Text column (always first on mobile) ── */}
+            <div className={textClass}>
               <p
-                key={idx}
-                className="animate-item font-body text-base leading-relaxed mb-5"
-                style={{ color: bodyColor }}
+                aria-hidden="true"
+                className="font-display italic text-2xl text-copper-ink tabular-nums mb-2"
               >
-                {para}
+                {String(index + 1).padStart(2, '0')}
               </p>
-            ))}
 
-            {/* Checkmarks (services 1–3) */}
-            {service.checkmarks && service.checkmarks.length > 0 && (
-              <ul className="space-y-3 mb-6">
-                {service.checkmarks.map((cm, i) => (
+              <h2 className="display-3 text-ink mb-3">{service.title}</h2>
+
+              <p className="font-display text-xl italic text-navy mb-6">
+                {service.subtitle}
+              </p>
+
+              {introParagraphs.map((para, idx) => (
+                <p
+                  key={idx}
+                  className="max-w-[65ch] text-base leading-7 text-ink-muted mb-5"
+                >
+                  {para}
+                </p>
+              ))}
+
+              {service.checkmarks && service.checkmarks.length > 0 && (
+                <ul className="space-y-3 mb-6 max-w-[65ch]">
+                  {service.checkmarks.map((cm, i) => (
+                    <li
+                      key={i}
+                      className="text-base leading-7 text-ink-muted flex items-start gap-3"
+                    >
+                      <Check
+                        size={18}
+                        strokeWidth={2.5}
+                        aria-hidden="true"
+                        className="mt-1 text-success-ink shrink-0"
+                      />
+                      <span>{cm}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <p className="font-body text-base font-semibold text-ink mb-3 max-w-[65ch]">
+                {service.label}
+              </p>
+
+              <ul className="space-y-3 mb-8 max-w-[65ch]">
+                {service.items.map((item, i) => (
                   <li
                     key={i}
-                    className="animate-item font-body text-base leading-relaxed flex items-start gap-3"
-                    style={{ color: bodyColor }}
+                    className="text-base leading-7 text-ink-muted flex items-start gap-3"
                   >
-                    <Check
-                      size={18}
-                      strokeWidth={2.5}
-                      className="mt-0.5 shrink-0"
-                      style={{ color: '#5c7c6b' }}
+                    <span
+                      aria-hidden="true"
+                      className="mt-2.5 block h-1.5 w-1.5 shrink-0 rounded-full bg-copper"
                     />
-                    <span>{cm}</span>
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
-            )}
 
-            {/* Label above bullet list */}
-            <p
-              className="animate-item font-body text-base font-semibold mb-3"
-              style={{ color: titleColor }}
-            >
-              {service.label}
-            </p>
-
-            {/* Bullet items */}
-            <ul className="space-y-3 mb-8">
-              {service.items.map((item, i) => (
-                <li
-                  key={i}
-                  className="animate-item font-body text-base leading-relaxed flex items-start gap-3"
-                  style={{ color: bodyColor }}
-                >
-                  <span
-                    className="mt-2 block h-1 w-1 shrink-0 rounded-full"
-                    style={{ backgroundColor: '#c9a87c' }}
+              {service.callout && (
+                <div className="mb-6 flex items-start gap-3 border border-rule bg-stone/60 p-4 max-w-[65ch]">
+                  <Lightbulb
+                    size={20}
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                    className="mt-0.5 shrink-0 text-copper-ink"
                   />
-                  {item}
-                </li>
-              ))}
-            </ul>
+                  <p className="text-sm font-medium leading-6 text-copper-ink">
+                    {service.callout}
+                  </p>
+                </div>
+              )}
 
-            {/* Callout (lightbulb) */}
-            {service.callout && (
-              <div
-                className="animate-item flex items-start gap-3 mb-6 p-4 rounded-lg"
-                style={{
-                  backgroundColor: isDark
-                    ? 'rgba(201,168,124,0.08)'
-                    : 'rgba(201,168,124,0.1)',
-                  border: '1px solid rgba(201,168,124,0.2)',
-                }}
-              >
-                <Lightbulb
-                  size={20}
-                  strokeWidth={2}
-                  className="mt-0.5 shrink-0"
-                  style={{ color: '#c9a87c' }}
-                />
-                <p
-                  className="font-body text-sm leading-relaxed"
-                  style={{ color: isDark ? '#d4b896' : 'var(--copper-ink)' }}
-                >
-                  {service.callout}
-                </p>
+              <p className="max-w-[65ch] text-base leading-7 text-ink-muted mb-5">
+                {service.closing}
+              </p>
+
+              <p className="max-w-[65ch] text-base leading-7 text-ink-muted mb-6">
+                {service.ctaText}
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                {service.ctas.map((cta, i) => (
+                  <CTAButton
+                    key={i}
+                    text={cta.text}
+                    primary={cta.primary}
+                    to={cta.to}
+                  />
+                ))}
               </div>
-            )}
+            </div>
 
-            {/* Closing paragraph */}
-            <p
-              className="animate-item font-body text-base leading-relaxed mb-5"
-              style={{ color: bodyColor }}
-            >
-              {service.closing}
-            </p>
-
-            {/* CTA text before buttons */}
-            <p
-              className="animate-item font-body text-base leading-relaxed mb-6"
-              style={{ color: bodyColor }}
-            >
-              {service.ctaText}
-            </p>
-
-            {/* CTA buttons */}
-            <div className="animate-item flex flex-wrap gap-4">
-              {service.ctas.map((cta, i) => (
-                <CTAButton
-                  key={i}
-                  text={cta.text}
-                  primary={cta.primary}
-                  to={cta.to}
-                />
-              ))}
+            {/* ── Media column (always second on mobile) ── */}
+            <div className={imageClass}>
+              {service.image ? (
+                <div className="overflow-hidden border border-rule bg-stone aspect-[16/10]">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    loading="lazy"
+                    className={`h-full w-full object-cover ${
+                      service.id === 'gdpr' ? 'saturate-[0.55] contrast-[0.95]' : ''
+                    }`}
+                  />
+                </div>
+              ) : (
+                <div className="border border-rule bg-stone/70 p-8 md:p-10 flex flex-col justify-between aspect-[16/10]">
+                  <div>
+                    {IconComponent && (
+                      <IconComponent
+                        size={44}
+                        strokeWidth={1.3}
+                        aria-hidden="true"
+                        className="text-navy"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <div aria-hidden="true" className="mb-4 h-px w-12 bg-copper" />
+                    <p className="font-display text-2xl text-ink leading-snug">
+                      {service.title}
+                    </p>
+                    <p className="mt-1.5 text-sm text-ink-muted">
+                      {service.subtitle}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-
-          {/* ── Decorative icon / image column ── */}
-          <div
-            ref={iconRef}
-            className={imageClass}
-            style={{ willChange: 'transform, opacity' }}
-          >
-            {service.image ? (
-              <div
-                className="rounded-lg overflow-hidden border"
-                style={{ borderColor: isDark ? '#262626' : '#e8e0d8' }}
-              >
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  loading="lazy"
-                  className="w-full aspect-square object-cover"
-                  style={{
-                    backgroundColor: isDark ? '#1a1a1a' : '#e8e0d8',
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="flex items-center justify-center py-8 lg:py-0">
-                {IconComponent && (
-                  <IconComponent
-                    size={64}
-                    strokeWidth={1.5}
-                    style={{ color: '#c9a87c', opacity: 0.2 }}
-                    aria-hidden="true"
-                  />
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </section>
+        </Reveal>
+      </Container>
+    </Section>
   )
 }
 
@@ -628,279 +526,182 @@ function ServiceSection({
 /* ------------------------------------------------------------------ */
 
 export default function Servicii() {
-  const heroRef = useRef<HTMLElement>(null)
-  const appSectionRef = useRef<HTMLElement>(null)
-  const finalCtaRef = useRef<HTMLElement>(null)
-  const pageRef = useRef<HTMLDivElement>(null)
-
-  useGSAP(
-    () => {
-      /* ---- Hero ---- */
-      if (heroRef.current) {
-        const heroEls = heroRef.current.querySelectorAll('.hero-animate')
-        gsap.from(heroEls, {
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: 'power3.out',
-          delay: 0.2,
-        })
-      }
-
-      /* ---- App Section ---- */
-      if (appSectionRef.current) {
-        const els = appSectionRef.current.querySelectorAll('.app-animate')
-        gsap.from(els, {
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: appSectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        })
-      }
-
-      /* ---- Final CTA ---- */
-      if (finalCtaRef.current) {
-        const els = finalCtaRef.current.querySelectorAll('.cta-animate')
-        gsap.from(els, {
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: finalCtaRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        })
-      }
-    },
-    { scope: pageRef }
-  )
-
   return (
-    <div ref={pageRef}>
+    <div>
       {/* ============================================================ */}
       {/* SECTION 1 — Hero                                             */}
       {/* ============================================================ */}
-      <section
-        ref={heroRef}
-        className="relative flex flex-col items-center justify-center text-center"
-        style={{
-          backgroundColor: '#000000',
-          minHeight: '70vh',
-          backgroundImage:
-            'url(/service-contabilitate.jpg), radial-gradient(ellipse at center, rgba(26,26,26,0.92) 0%, rgba(0,0,0,0.95) 70%)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundBlendMode: 'overlay',
-        }}
-      >
-        <div
-          className="content-max-width pt-[72px] px-4 md:px-8"
-          style={{ willChange: 'transform, opacity' }}
-        >
-          <h1
-            className="hero-animate font-display text-[clamp(2.5rem,5vw,4.5rem)] font-normal leading-[1.1] tracking-[-0.01em] mb-6"
-            style={{ color: '#f5f0eb', textWrap: 'balance' }}
-          >
-            Serviciile Noastre
-          </h1>
+      <section className="bg-alabaster pt-28 pb-16 md:pt-36 md:pb-24">
+        <Container className="grid items-center gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <h1 className="display-2 text-ink">Serviciile Noastre</h1>
 
-          <p
-            className="hero-animate font-body text-xl font-light mb-10"
-            style={{ color: '#94a3b8' }}
-          >
-            CESS este centrul externalizat pentru servicii suport, creat să îți
-            simplifice procesele și să te ajute să respecți toate obligațiile
-            legale, fără stres, fără timp pierdut și fără riscuri.
-          </p>
+            <p className="mt-6 text-lg leading-8 text-ink-muted max-w-[60ch]">
+              CESS este centrul externalizat pentru servicii suport, creat să îți
+              simplifice procesele și să te ajute să respecți toate obligațiile
+              legale, fără stres, fără timp pierdut și fără riscuri.
+            </p>
 
-          {/* Hero key points with checkmarks */}
-          <div className="hero-animate max-w-[700px] mx-auto space-y-3 mb-10 text-left">
-            {[
-              'Acoperim integral: contabilitate, fiscalitate, GDPR, SSM, securitate fizică, salarizare, REGES, PSI',
-              'Lucrăm digitalizat, cu trasabilitate completă',
-              'Poți colabora 100% de la distanță, prin aplicația noastră sau cu suport uman',
-            ].map((point, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-3 font-body text-lg leading-relaxed"
-                style={{ color: '#94a3b8' }}
-              >
-                <Check
-                  size={20}
-                  strokeWidth={2.5}
-                  className="mt-1 shrink-0"
-                  style={{ color: '#5c7c6b' }}
-                />
-                <span>{point}</span>
-              </div>
-            ))}
+            <ul className="mt-8 space-y-3 max-w-[62ch]">
+              {heroPoints.map((point, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-3 text-base leading-7 text-ink-muted"
+                >
+                  <Check
+                    size={18}
+                    strokeWidth={2.5}
+                    aria-hidden="true"
+                    className="mt-1 text-success-ink shrink-0"
+                  />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8">
+              <ActionLink to="/contact">Contactează-ne</ActionLink>
+            </div>
           </div>
 
-          <div className="hero-animate">
-            <CTAButton text="Contactează-ne" primary to="/contact" />
+          <div className="lg:col-span-5">
+            <div className="overflow-hidden border border-rule bg-stone aspect-[16/10]">
+              <img
+                src="/service-contabilitate.jpg"
+                alt="Servicii integrate de contabilitate și conformare CESS"
+                fetchPriority="high"
+                className="h-full w-full object-cover"
+              />
+            </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* ============================================================ */}
-      {/* SECTIONS 2–8 — Services                                       */}
+      {/* QUICK INDEX BAR                                              */}
+      {/* ============================================================ */}
+      <nav
+        aria-label="Servicii disponibile"
+        className="border-y border-rule bg-vellum"
+      >
+        <Container className="flex flex-wrap items-center gap-x-6 gap-y-2 py-4">
+          {services.map((s, i) => (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className="inline-flex min-h-[40px] items-center text-sm font-medium text-ink-muted tabular-nums transition-colors hover:text-navy"
+            >
+              {String(i + 1).padStart(2, '0')}. {s.title}
+            </a>
+          ))}
+        </Container>
+      </nav>
+
+      {/* ============================================================ */}
+      {/* SECTIONS 2–8 — Services                                      */}
       {/* ============================================================ */}
       {services.map((service, index) => (
-        <ServiceSection
-          key={service.anchor}
-          service={service}
-          isDark={index % 2 === 1}
-        />
+        <ServiceSection key={service.id} service={service} index={index} />
       ))}
 
       {/* ============================================================ */}
-      {/* SECTION 9 — Aplicația CESS                                    */}
+      {/* SECTION 9 — Aplicația CESS                                   */}
       {/* ============================================================ */}
-      <section
-        ref={appSectionRef}
-        className="section-padding"
-        style={{ backgroundColor: '#000000' }}
-      >
-        <div className="content-max-width">
-          {/* Heading */}
-          <h2
-            className="app-animate font-display text-[clamp(2rem,4vw,3rem)] font-normal leading-[1.15] tracking-[-0.01em] mb-6 max-w-[900px]"
-            style={{ color: '#f5f0eb', textWrap: 'balance' }}
-          >
-            Aplicația CESS – Totul într-un singur loc, la un click distanță
-          </h2>
+      <Section tone="navy">
+        <Container>
+          <Reveal>
+            <div className="max-w-[75ch]">
+              <SectionHeading
+                tone="dark"
+                title="Aplicația CESS – Totul într-un singur loc, la un click distanță"
+                description="La CESS, nu ne limităm la livrarea clasică de servicii – mergem mai departe, oferindu-ți și o soluție digitală integrată: aplicația CESS. Este un instrument inteligent, creat special pentru antreprenori și manageri care vor să rămână conformi cu legislația în vigoare fără să piardă timp sau să depindă de hârtii inutile."
+              />
 
-          {/* Intro */}
-          <p
-            className="app-animate font-body text-lg leading-relaxed mb-8 max-w-[750px]"
-            style={{ color: '#94a3b8' }}
-          >
-            La CESS, nu ne limităm la livrarea clasică de servicii – mergem mai
-            departe, oferindu-ți și o soluție digitală integrată: aplicația
-            CESS. Este un instrument inteligent, creat special pentru
-            antreprenori și manageri care vor să rămână conformi cu legislația
-            în vigoare fără să piardă timp sau să depindă de hârtii inutile.
-          </p>
+              <p className="mt-8 font-body text-base font-semibold text-on-dark mb-4">
+                Aplicația te ajută să gestionezi într-un singur loc tot ce ține de:
+              </p>
 
-          {/* Sublabel */}
-          <p
-            className="app-animate font-body text-base font-semibold mb-4"
-            style={{ color: '#f5f0eb' }}
-          >
-            Aplicația te ajută să gestionezi într-un singur loc tot ce ține de:
-          </p>
+              <ul className="space-y-3 mb-8 max-w-[65ch]">
+                {appFeatures.map((feat, i) => (
+                  <li
+                    key={i}
+                    className="text-base leading-7 text-on-dark-muted flex items-start gap-3"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-2.5 block h-1.5 w-1.5 shrink-0 rounded-full bg-copper"
+                    />
+                    <span>{parseBold(feat)}</span>
+                  </li>
+                ))}
+              </ul>
 
-          {/* Feature list with bold labels */}
-          <ul className="space-y-3 mb-8 max-w-[750px]">
-            {appFeatures.map((feat, i) => (
-              <li
-                key={i}
-                className="app-animate font-body text-base leading-relaxed flex items-start gap-3"
-                style={{ color: '#94a3b8' }}
-              >
-                <span
-                  className="mt-2 block h-1 w-1 shrink-0 rounded-full"
-                  style={{ backgroundColor: '#c9a87c' }}
-                />
-                <span>{parseBold(feat)}</span>
-              </li>
-            ))}
-          </ul>
+              <p className="max-w-[65ch] text-base leading-7 text-on-dark-muted mb-6">
+                Poți folosi aplicația intern, cu personalul propriu, sau în
+                combinație cu suportul specialiștilor noștri – totul flexibil, pe
+                nevoile tale.
+              </p>
 
-          {/* Closing */}
-          <p
-            className="app-animate font-body text-base leading-relaxed mb-8 max-w-[750px]"
-            style={{ color: '#94a3b8' }}
-          >
-            Poți folosi aplicația intern, cu personalul propriu, sau în
-            combinație cu suportul specialiștilor noștri – totul flexibil, pe
-            nevoile tale.
-          </p>
+              <p className="max-w-[65ch] text-base leading-7 text-copper-light mb-8">
+                Vrei să vezi cum funcționează? Contactează-ne pentru un demo
+                gratuit și descoperă cum îți poți reduce efortul administrativ la
+                jumătate!
+              </p>
 
-          {/* Demo CTA text */}
-          <p
-            className="app-animate font-body text-base leading-relaxed mb-8 max-w-[750px]"
-            style={{ color: '#d4b896' }}
-          >
-            👉 Vrei să vezi cum funcționează? Contactează-ne pentru un demo
-            gratuit și descoperă cum îți poți reduce efortul administrativ la
-            jumătate!
-          </p>
-
-          {/* CTA Button */}
-          <div className="app-animate">
-            <CTAButton text="Contactează-ne" primary to="/contact" />
-          </div>
-        </div>
-      </section>
+              <ActionLink to="/contact" variant="light">
+                Contactează-ne
+              </ActionLink>
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
 
       {/* ============================================================ */}
       {/* SECTION 10 — Final CTA                                       */}
       {/* ============================================================ */}
-      <section
-        ref={finalCtaRef}
-        className="section-padding"
-        style={{ backgroundColor: '#0a0a0a' }}
-      >
-        <div className="content-max-width text-center">
-          <h2
-            className="cta-animate font-display text-[clamp(2rem,4vw,3.5rem)] font-normal leading-[1.1] tracking-[-0.01em] mb-6"
-            style={{ color: '#f5f0eb', textWrap: 'balance' }}
-          >
-            Vrei să știi ce ți se potrivește?
-          </h2>
+      <Section tone="vellum">
+        <Container>
+          <Reveal>
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="display-2 text-ink mb-6">
+                Vrei să știi ce ți se potrivește?
+              </h2>
 
-          <p
-            className="cta-animate font-body text-lg leading-relaxed mb-10 max-w-[650px] mx-auto"
-            style={{ color: '#94a3b8' }}
-          >
-            Alege CESS pentru servicii complete, clare și livrate corect.
-            Contactează-ne acum pentru o consultanță gratuită și vezi cum te
-            putem ajuta, concret!
-          </p>
+              <p className="text-lg leading-8 text-ink-muted mb-10 max-w-[60ch] mx-auto">
+                Alege CESS pentru servicii complete, clare și livrate corect.
+                Contactează-ne acum pentru o consultanță gratuită și vezi cum te
+                putem ajuta, concret!
+              </p>
 
-          {/* Contact info */}
-          <p
-            className="cta-animate font-body text-xl font-medium mb-2"
-            style={{ color: '#c9a87c' }}
-          >
-            Telefon: +40 723 926 446
-          </p>
+              <div className="space-y-2 mb-10">
+                <p className="text-xl font-medium text-ink">
+                  Telefon:{' '}
+                  <a
+                    href="tel:+40723926446"
+                    className="text-navy underline underline-offset-4 hover:text-copper-ink tabular-nums"
+                  >
+                    +40 723 926 446
+                  </a>
+                </p>
 
-          <p
-            className="cta-animate font-body text-base mb-1"
-            style={{ color: '#94a3b8' }}
-          >
-            Email: contact@cess.ro
-          </p>
+                <p className="text-base text-ink-muted">
+                  Email:{' '}
+                  <a
+                    href="mailto:contact@cess.ro"
+                    className="text-navy underline underline-offset-4 hover:text-copper-ink"
+                  >
+                    contact@cess.ro
+                  </a>
+                </p>
 
-          <p
-            className="cta-animate font-body text-base mb-10"
-            style={{ color: '#94a3b8' }}
-          >
-            Constanța
-          </p>
+                <p className="text-base text-ink-muted">Constanța</p>
+              </div>
 
-          <div className="cta-animate">
-            <CTAButton
-              text="Contactează-ne"
-              primary
-              to="/contact"
-              large
-            />
-          </div>
-        </div>
-      </section>
+              <CTAButton text="Contactează-ne" primary to="/contact" large />
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
     </div>
   )
 }

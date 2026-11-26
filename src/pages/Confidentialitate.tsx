@@ -1,45 +1,87 @@
-import { useEffect, useRef, useState } from 'react'
-import { useScrollReveal } from '@/hooks/useScrollReveal'
-import { ArrowUp } from 'lucide-react'
+import { useEffect, useState, type ReactNode } from 'react'
+import { Link } from 'react-router'
+import { ArrowUp, ChevronDown } from 'lucide-react'
+import Container from '@/components/site/Container'
+import ActionLink from '@/components/site/ActionLink'
+import Reveal from '@/components/site/Reveal'
+import { cn } from '@/lib/utils'
 
-const sections = [
-  { id: 'cine-suntem', title: '1. Cine suntem' },
-  { id: 'ce-date-colectam', title: '2. Ce date colectăm' },
-  { id: 'scopurile-prelucrarii', title: '3. Scopurile prelucrării' },
-  { id: 'temeiul-legal', title: '4. Temeiul legal' },
-  { id: 'stocarea-datelor', title: '5. Stocarea datelor' },
-  { id: 'securitatea-datelor', title: '6. Securitatea datelor' },
-  { id: 'drepturile-tale', title: '7. Drepturile tale' },
-  { id: 'cookie-uri', title: '8. Cookie-uri' },
-  { id: 'modificari', title: '9. Modificări' },
-]
-
-function SectionReveal({ children, className }: { children: React.ReactNode; className?: string }) {
-  const { ref, isVisible } = useScrollReveal<HTMLDivElement>()
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
-        transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-      }}
-    >
-      {children}
-    </div>
-  )
+interface LegalSection {
+  id: string
+  title: string
+  content: ReactNode
 }
+
+const sections: LegalSection[] = [
+  {
+    id: 'cine-suntem',
+    title: '1. Cine suntem',
+    content:
+      'CESS TRUST S.R.L., CUI 37449212, cu sediul în Strada Viitorului 4, Bloc 4B, Constanța, România, email: contact@cess.ro, telefon: +40 723 926 446. Suntem operator de date cu caracter personal înregistrat la ANSPDRC.',
+  },
+  {
+    id: 'ce-date-colectam',
+    title: '2. Ce date colectăm',
+    content:
+      'Colectăm următoarele categorii de date: date de identificare (nume, prenume), date de contact (email, telefon, adresă), date profesionale (funcție, companie), date tehnice (adresă IP, tip browser, sistem de operare), și orice alte date pe care ni le furnizați voluntar prin formularul de contact.',
+  },
+  {
+    id: 'scopurile-prelucrarii',
+    title: '3. Scopurile prelucrării',
+    content:
+      'Datele sunt prelucrate în următoarele scopuri: furnizarea serviciilor solicitate, comunicarea cu dvs., transmiterea de informații și newslettere (cu consimțământ), îmbunătățirea serviciilor, respectarea obligațiilor legale.',
+  },
+  {
+    id: 'temeiul-legal',
+    title: '4. Temeiul legal',
+    content:
+      'Prelucrarea datelor se bazează pe: executarea unui contract sau la cererea dvs. premergătoare încheierii acestuia, consimțământul dvs., obligații legale, interese legitime.',
+  },
+  {
+    id: 'stocarea-datelor',
+    title: '5. Stocarea datelor',
+    content:
+      'Datele sunt stocate pe servere securizate în Uniunea Europeană. Păstrăm datele doar atât timp cât este necesar pentru scopurile prelucrării sau cât ne obligă legea.',
+  },
+  {
+    id: 'securitatea-datelor',
+    title: '6. Securitatea datelor',
+    content:
+      'Implementăm măsuri tehnice și organizatorice adecvate pentru protejarea datelor împotriva accesului neautorizat, pierderii sau distrugerii.',
+  },
+  {
+    id: 'drepturile-tale',
+    title: '7. Drepturile tale',
+    content:
+      'Conform Regulamentului (UE) 2016/679 (GDPR), aveți următoarele drepturi: dreptul de acces, dreptul la rectificare, dreptul la ștergerea datelor ("dreptul de a fi uitat"), dreptul la restricționarea prelucrării, dreptul la portabilitatea datelor, dreptul la opoziție, dreptul de a nu face obiectul unei decizii bazate exclusiv pe prelucrarea automată. Pentru exercitarea acestor drepturi, contactați-ne la contact@cess.ro.',
+  },
+  {
+    id: 'cookie-uri',
+    title: '8. Cookie-uri',
+    content: (
+      <>
+        Site-ul utilizează cookie-uri. Pentru mai multe informații, consultați{' '}
+        <Link
+          to="/cookie"
+          className="font-medium text-copper-ink underline underline-offset-4 hover:text-navy"
+        >
+          Politica Cookie
+        </Link>
+        .
+      </>
+    ),
+  },
+  {
+    id: 'modificari',
+    title: '9. Modificări',
+    content:
+      'Ne rezervăm dreptul de a actualiza această politică. Modificările vor fi publicate pe această pagină cu data actualizării.',
+  },
+]
 
 export default function Confidentialitate() {
   const [activeSection, setActiveSection] = useState('')
   const [showBackToTop, setShowBackToTop] = useState(false)
-  const [heroVisible, setHeroVisible] = useState(false)
-  const heroRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    setHeroVisible(true)
-  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,6 +100,7 @@ export default function Confidentialitate() {
       setActiveSection(current)
     }
 
+    handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -65,368 +108,147 @@ export default function Confidentialitate() {
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id)
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth'
+      el.scrollIntoView({ behavior, block: 'start' })
     }
   }
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 'auto'
+      : 'smooth'
+    window.scrollTo({ top: 0, behavior })
   }
 
   return (
     <div>
       {/* Hero */}
-      <div
-        ref={heroRef}
-        className="flex items-center justify-center"
-        style={{
-          backgroundColor: '#000000',
-          minHeight: '40vh',
-        }}
+      <section
+        data-surface="dark"
+        className="bg-navy text-on-dark pt-28 pb-14 md:pt-36 md:pb-16"
       >
-        <div className="text-center px-4">
-          <h1
-            className="font-display font-normal"
-            style={{
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              color: '#f5f0eb',
-              lineHeight: 1.1,
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          >
-            Politica de Confidențialitate
-          </h1>
-          <p
-            className="font-body text-base mt-4"
-            style={{
-              color: '#94a3b8',
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
-            }}
-          >
-            CESS TRUST S.R.L.
-          </p>
-          <p
-            className="font-body mt-2"
-            style={{
-              fontSize: '0.75rem',
-              color: 'rgba(148,163,184,0.6)',
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
-            }}
-          >
-            Ultima actualizare: ianuarie 2025
-          </p>
-        </div>
-      </div>
+        <Container>
+          <div className="max-w-3xl">
+            <h1 className="display-2 text-on-dark">Politica de Confidențialitate</h1>
+            <p className="mt-4 font-body text-base text-on-dark-muted">
+              CESS TRUST S.R.L.
+            </p>
+            <p className="mt-2 font-body text-sm text-on-dark-muted tabular-nums">
+              Ultima actualizare: ianuarie 2025
+            </p>
+          </div>
+        </Container>
+      </section>
 
       {/* Content */}
-      <div style={{ backgroundColor: '#f5f0eb' }}>
-        <div className="content-max-width relative">
-          {/* Sticky sidebar TOC (desktop only) */}
-          <nav
-            className="hidden lg:block"
-            style={{
-              position: 'fixed',
-              width: '240px',
-              left: 'calc(50% - 640px)',
-              top: '100px',
-            }}
-          >
-            <ul className="space-y-2">
-              {sections.map((s) => (
-                <li key={s.id}>
-                  <button
-                    onClick={() => scrollToSection(s.id)}
-                    className="font-body text-sm text-left w-full transition-colors duration-300"
-                    style={{
-                      color: activeSection === s.id ? 'var(--copper-ink)' : 'var(--text-muted)',
-                      fontWeight: activeSection === s.id ? 500 : 400,
-                    }}
-                    onMouseEnter={(e) => {
-                      if (activeSection !== s.id) {
-                        e.currentTarget.style.color = 'var(--copper-ink)'
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (activeSection !== s.id) {
-                        e.currentTarget.style.color = 'var(--text-muted)'
-                      }
-                    }}
-                  >
-                    {s.title}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* Main content */}
-          <div
-            className="py-24 lg:pt-32"
-            style={{
-              maxWidth: '800px',
-              margin: '0 auto',
-            }}
-          >
-            <SectionReveal>
-              <section id="cine-suntem" className="scroll-mt-28">
-                <h2
-                  className="font-body font-semibold"
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#000000',
-                    marginTop: '0',
-                    marginBottom: '24px',
-                  }}
-                >
-                  1. Cine suntem
-                </h2>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '1rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  CESS TRUST S.R.L., CUI 37449212, cu sediul în Strada Viitorului 4, Bloc 4B, Constanța, România, email: contact@cess.ro, telefon: +40 723 926 446. Suntem operator de date cu caracter personal înregistrat la ANSPDRC.
-                </p>
-              </section>
-            </SectionReveal>
-
-            <div style={{ height: '1px', backgroundColor: '#e8e0d8', margin: '64px 0' }} />
-
-            <SectionReveal>
-              <section id="ce-date-colectam" className="scroll-mt-28">
-                <h2
-                  className="font-body font-semibold"
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#000000',
-                    marginBottom: '24px',
-                  }}
-                >
-                  2. Ce date colectăm
-                </h2>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '1rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  Colectăm următoarele categorii de date: date de identificare (nume, prenume), date de contact (email, telefon, adresă), date profesionale (funcție, companie), date tehnice (adresă IP, tip browser, sistem de operare), și orice alte date pe care ni le furnizați voluntar prin formularul de contact.
-                </p>
-              </section>
-            </SectionReveal>
-
-            <div style={{ height: '1px', backgroundColor: '#e8e0d8', margin: '64px 0' }} />
-
-            <SectionReveal>
-              <section id="scopurile-prelucrarii" className="scroll-mt-28">
-                <h2
-                  className="font-body font-semibold"
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#000000',
-                    marginBottom: '24px',
-                  }}
-                >
-                  3. Scopurile prelucrării
-                </h2>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '1rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  Datele sunt prelucrate în următoarele scopuri: furnizarea serviciilor solicitate, comunicarea cu dvs., transmiterea de informații și newslettere (cu consimțământ), îmbunătățirea serviciilor, respectarea obligațiilor legale.
-                </p>
-              </section>
-            </SectionReveal>
-
-            <div style={{ height: '1px', backgroundColor: '#e8e0d8', margin: '64px 0' }} />
-
-            <SectionReveal>
-              <section id="temeiul-legal" className="scroll-mt-28">
-                <h2
-                  className="font-body font-semibold"
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#000000',
-                    marginBottom: '24px',
-                  }}
-                >
-                  4. Temeiul legal
-                </h2>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '1rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  Prelucrarea datelor se bazează pe: executarea unui contract sau la cererea dvs. premergătoare încheierii acestuia, consimțământul dvs., obligații legale, interese legitime.
-                </p>
-              </section>
-            </SectionReveal>
-
-            <div style={{ height: '1px', backgroundColor: '#e8e0d8', margin: '64px 0' }} />
-
-            <SectionReveal>
-              <section id="stocarea-datelor" className="scroll-mt-28">
-                <h2
-                  className="font-body font-semibold"
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#000000',
-                    marginBottom: '24px',
-                  }}
-                >
-                  5. Stocarea datelor
-                </h2>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '1rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  Datele sunt stocate pe servere securizate în Uniunea Europeană. Păstrăm datele doar atât timp cât este necesar pentru scopurile prelucrării sau cât ne obligă legea.
-                </p>
-              </section>
-            </SectionReveal>
-
-            <div style={{ height: '1px', backgroundColor: '#e8e0d8', margin: '64px 0' }} />
-
-            <SectionReveal>
-              <section id="securitatea-datelor" className="scroll-mt-28">
-                <h2
-                  className="font-body font-semibold"
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#000000',
-                    marginBottom: '24px',
-                  }}
-                >
-                  6. Securitatea datelor
-                </h2>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '1rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  Implementăm măsuri tehnice și organizatorice adecvate pentru protejarea datelor împotriva accesului neautorizat, pierderii sau distrugerii.
-                </p>
-              </section>
-            </SectionReveal>
-
-            <div style={{ height: '1px', backgroundColor: '#e8e0d8', margin: '64px 0' }} />
-
-            <SectionReveal>
-              <section id="drepturile-tale" className="scroll-mt-28">
-                <h2
-                  className="font-body font-semibold"
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#000000',
-                    marginBottom: '24px',
-                  }}
-                >
-                  7. Drepturile tale
-                </h2>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '1rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  Conform Regulamentului (UE) 2016/679 (GDPR), aveți următoarele drepturi: dreptul de acces, dreptul la rectificare, dreptul la ștergerea datelor (&quot;dreptul de a fi uitat&quot;), dreptul la restricționarea prelucrării, dreptul la portabilitatea datelor, dreptul la opoziție, dreptul de a nu face obiectul unei decizii bazate exclusiv pe prelucrarea automată. Pentru exercitarea acestor drepturi, contactați-ne la contact@cess.ro.
-                </p>
-              </section>
-            </SectionReveal>
-
-            <div style={{ height: '1px', backgroundColor: '#e8e0d8', margin: '64px 0' }} />
-
-            <SectionReveal>
-              <section id="cookie-uri" className="scroll-mt-28">
-                <h2
-                  className="font-body font-semibold"
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#000000',
-                    marginBottom: '24px',
-                  }}
-                >
-                  8. Cookie-uri
-                </h2>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '1rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  Site-ul utilizează cookie-uri. Pentru mai multe informații, consultați <a href="/cookie" className="underline transition-colors duration-300" style={{ color: 'var(--copper-ink)' }}>Politica Cookie</a>.
-                </p>
-              </section>
-            </SectionReveal>
-
-            <div style={{ height: '1px', backgroundColor: '#e8e0d8', margin: '64px 0' }} />
-
-            <SectionReveal>
-              <section id="modificari" className="scroll-mt-28">
-                <h2
-                  className="font-body font-semibold"
-                  style={{
-                    fontSize: '1.5rem',
-                    color: '#000000',
-                    marginBottom: '24px',
-                  }}
-                >
-                  9. Modificări
-                </h2>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '1rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  Ne rezervăm dreptul de a actualiza această politică. Modificările vor fi publicate pe această pagină cu data actualizării.
-                </p>
-              </section>
-            </SectionReveal>
+      <div className="bg-alabaster text-ink">
+        <Container className="py-12 md:py-20">
+          {/* Mobile / Tablet jump index */}
+          <div className="lg:hidden mb-8">
+            <details className="group border border-rule bg-vellum p-4">
+              <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between font-body text-sm font-semibold uppercase tracking-[0.12em] text-navy">
+                <span>Cuprins</span>
+                <ChevronDown
+                  className="h-4 w-4 shrink-0 text-navy transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden="true"
+                />
+              </summary>
+              <ul className="mt-3 space-y-1 border-t border-rule pt-3">
+                {sections.map((s) => (
+                  <li key={s.id}>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection(s.id)}
+                      className="w-full min-h-[40px] py-1.5 text-left font-body text-sm text-ink-muted hover:text-navy tabular-nums"
+                    >
+                      {s.title}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </details>
           </div>
-        </div>
+
+          <div className="grid gap-10 lg:grid-cols-[240px_minmax(0,720px)] lg:justify-center lg:gap-16">
+            {/* Sticky sidebar TOC (desktop) */}
+            <nav className="hidden lg:block" aria-label="Cuprins">
+              <ul className="sticky top-28 space-y-1 border-t border-rule pt-4">
+                {sections.map((s) => (
+                  <li key={s.id}>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection(s.id)}
+                      aria-current={activeSection === s.id ? 'true' : undefined}
+                      className={cn(
+                        'min-h-[40px] w-full border-l-2 py-2 pl-3 text-left font-body text-sm transition-colors tabular-nums',
+                        activeSection === s.id
+                          ? 'border-copper font-semibold text-navy'
+                          : 'border-transparent text-ink-muted hover:text-navy',
+                      )}
+                    >
+                      {s.title}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Main prose column */}
+            <div className="min-w-0 max-w-[68ch] tabular-nums">
+              {sections.map((s, index) => (
+                <div key={s.id}>
+                  {index > 0 && <hr className="my-10 border-0 border-t border-rule md:my-12" />}
+                  <Reveal>
+                    <section id={s.id} className="scroll-mt-28">
+                      <h2 className="font-display text-2xl md:text-3xl text-ink mb-4">
+                        {s.title}
+                      </h2>
+                      <p className="font-body text-base leading-8 text-ink-muted">
+                        {s.content}
+                      </p>
+                    </section>
+                  </Reveal>
+                </div>
+              ))}
+
+              {/* Editorial contact bar */}
+              <div className="mt-16 flex flex-col gap-4 border-t border-rule pt-10 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="font-display text-xl text-ink">
+                    Aveți solicitări privind datele personale?
+                  </p>
+                  <p className="mt-1 font-body text-sm text-ink-muted">
+                    Echipa CESS TRUST S.R.L. răspunde solicitărilor GDPR direct și transparent.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-4">
+                  <ActionLink to="/contact">Contactează-ne</ActionLink>
+                  <a
+                    href="tel:+40723926446"
+                    className="inline-flex min-h-[48px] items-center font-body text-sm font-medium text-navy underline underline-offset-4 hover:text-copper-ink tabular-nums"
+                  >
+                    +40 723 926 446
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Container>
       </div>
 
       {/* Back to top button (mobile) */}
       {showBackToTop && (
         <button
+          type="button"
+          data-surface="dark"
           onClick={scrollToTop}
-          className="lg:hidden fixed bottom-6 right-6 z-40 flex items-center justify-center w-12 h-12 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-          style={{ backgroundColor: '#c9a87c' }}
+          className="fixed bottom-5 left-4 z-40 inline-flex h-11 items-center gap-2 rounded-[2px] border border-rule-dark bg-navy px-4 font-body text-xs font-semibold uppercase tracking-[0.08em] text-on-dark shadow-lg lg:hidden"
           aria-label="Înapoi sus"
         >
-          <ArrowUp size={20} color="#000000" />
+          <ArrowUp className="h-4 w-4" aria-hidden="true" />
+          <span>Sus</span>
         </button>
       )}
     </div>

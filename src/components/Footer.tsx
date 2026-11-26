@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { Phone, Mail, MapPin, Facebook, Linkedin } from 'lucide-react'
+import Container from '@/components/site/Container'
 
 const quickLinks = [
   { label: 'Servicii', path: '/servicii' },
@@ -16,40 +17,36 @@ const legalLinks = [
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#000000' }}>
-      {/* Top area */}
-      <div className="content-max-width pt-24 md:pt-32 pb-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          {/* Column 1 — Brand */}
-          <div>
-            <Link to="/" className="font-display text-2xl font-medium" style={{ color: '#f5f0eb' }}>
+    <footer className="bg-navy text-on-dark" data-surface="dark">
+      <Container>
+        <h2 className="sr-only">Informații și navigare</h2>
+
+        <div className="grid gap-12 py-16 md:py-20 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-5">
+            <Link
+              to="/"
+              className="inline-block font-display text-2xl font-medium tracking-[-0.03em] text-on-dark"
+            >
               CESS
             </Link>
-            <p className="font-body text-sm mt-3" style={{ color: '#94a3b8' }}>
+            <p className="mt-3 max-w-[38ch] font-body text-sm leading-6 text-on-dark-muted">
               Centrul Externalizat pentru Servicii Suport Administrative și Legale
             </p>
-            <p
-              className="font-body text-xs font-semibold uppercase mt-4"
-              style={{ color: '#c9a87c', letterSpacing: '0.08em' }}
-            >
+            <p className="mt-4 font-body text-xs font-semibold uppercase tracking-[0.08em] text-copper-light">
               CREATIVITATE. EFICIENȚĂ. TEHNOLOGIE.
             </p>
           </div>
 
-          {/* Column 2 — Quick Links */}
-          <div>
-            <h4 className="font-body text-sm font-semibold uppercase mb-4" style={{ color: '#f5f0eb', letterSpacing: '0.08em' }}>
+          <div className="lg:col-span-2">
+            <h3 className="mb-4 font-body text-xs font-semibold uppercase tracking-[0.12em] text-on-dark">
               Linkuri utile
-            </h4>
-            <ul className="space-y-3">
+            </h3>
+            <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="font-body text-sm transition-colors duration-300 hover:underline"
-                    style={{ color: '#94a3b8' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = '#c9a87c' }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = '#94a3b8' }}
+                    className="inline-block py-1 font-body text-sm text-on-dark-muted underline-offset-4 transition-colors duration-200 hover:text-on-dark hover:underline"
                   >
                     {link.label}
                   </Link>
@@ -58,20 +55,16 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3 — Legal */}
-          <div>
-            <h4 className="font-body text-sm font-semibold uppercase mb-4" style={{ color: '#f5f0eb', letterSpacing: '0.08em' }}>
+          <div className="lg:col-span-2">
+            <h3 className="mb-4 font-body text-xs font-semibold uppercase tracking-[0.12em] text-on-dark">
               Legal
-            </h4>
-            <ul className="space-y-3">
+            </h3>
+            <ul className="space-y-2">
               {legalLinks.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="font-body text-sm transition-colors duration-300 hover:underline"
-                    style={{ color: '#94a3b8' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = '#c9a87c' }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = '#94a3b8' }}
+                    className="inline-block py-1 font-body text-sm text-on-dark-muted underline-offset-4 transition-colors duration-200 hover:text-on-dark hover:underline"
                   >
                     {link.label}
                   </Link>
@@ -80,166 +73,121 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4 — Contact */}
-          <div>
-            <h4 className="font-body text-sm font-semibold uppercase mb-4" style={{ color: '#f5f0eb', letterSpacing: '0.08em' }}>
+          <div className="lg:col-span-3">
+            <h3 className="mb-4 font-body text-xs font-semibold uppercase tracking-[0.12em] text-on-dark">
               Contact
-            </h4>
-            <ul className="space-y-3">
+            </h3>
+            <ul className="space-y-2.5">
               <li>
                 <a
                   href="tel:+40723926446"
-                  className="font-body text-sm flex items-center gap-2 transition-colors duration-300"
-                  style={{ color: '#94a3b8' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = '#c9a87c' }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = '#94a3b8' }}
+                  className="inline-flex items-center gap-2.5 py-1 font-body text-sm tabular-nums text-on-dark-muted transition-colors duration-200 hover:text-on-dark"
                 >
-                  <Phone size={14} />
-                  +40 723 926 446
+                  <Phone size={15} className="shrink-0 text-copper-light" aria-hidden="true" />
+                  <span>+40 723 926 446</span>
                 </a>
               </li>
               <li>
                 <a
                   href="mailto:contact@cess.ro"
-                  className="font-body text-sm flex items-center gap-2 transition-colors duration-300"
-                  style={{ color: '#94a3b8' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = '#c9a87c' }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = '#94a3b8' }}
+                  className="inline-flex items-center gap-2.5 py-1 font-body text-sm text-on-dark-muted transition-colors duration-200 hover:text-on-dark"
                 >
-                  <Mail size={14} />
-                  contact@cess.ro
+                  <Mail size={15} className="shrink-0 text-copper-light" aria-hidden="true" />
+                  <span>contact@cess.ro</span>
                 </a>
               </li>
               <li>
-                <span className="font-body text-sm flex items-start gap-2" style={{ color: '#94a3b8' }}>
-                  <MapPin size={14} className="mt-0.5 shrink-0" />
-                  Strada Viitorului 4, Bloc 4B, Constanța
+                <span className="flex items-start gap-2.5 py-1 font-body text-sm leading-6 text-on-dark-muted">
+                  <MapPin size={15} className="mt-1 shrink-0 text-copper-light" aria-hidden="true" />
+                  <span>Strada Viitorului 4, Bloc 4B, Constanța</span>
                 </span>
               </li>
-              <li className="flex items-center gap-4 pt-2">
+              <li className="flex items-center gap-3 pt-2">
                 <a
                   href="https://www.facebook.com/profile.php?id=61578833986926"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-colors duration-300"
-                  style={{ color: '#94a3b8' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = '#c9a87c' }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = '#94a3b8' }}
+                  aria-label="Pagina de Facebook CESS"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-rule-dark text-on-dark-muted transition-colors hover:border-copper-light hover:text-on-dark"
                 >
-                  <Facebook size={18} />
+                  <Facebook size={18} aria-hidden="true" />
                 </a>
                 <a
                   href="https://www.linkedin.com/company/108608033/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-colors duration-300"
-                  style={{ color: '#94a3b8' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = '#c9a87c' }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = '#94a3b8' }}
+                  aria-label="Pagina de LinkedIn CESS"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-rule-dark text-on-dark-muted transition-colors hover:border-copper-light hover:text-on-dark"
                 >
-                  <Linkedin size={18} />
+                  <Linkedin size={18} aria-hidden="true" />
                 </a>
               </li>
             </ul>
           </div>
         </div>
-      </div>
 
-      {/* Divider */}
-      <div className="content-max-width">
-        <div style={{ borderTop: '1px solid #262626' }} />
-      </div>
-
-      {/* Bottom bar */}
-      <div className="content-max-width py-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-            <img
-              src="/eu-pnrr-logo.png"
-              alt="PNRR - Finanțat de Uniunea Europeană"
-              className="h-10 w-auto object-contain"
-            />
-            <span className="font-body text-xs text-center sm:text-left" style={{ color: '#94a3b8' }}>
-              PNRR. Finanțat de Uniunea Europeană – Următoarea Generație UE
+        <div className="border-t border-rule-dark pt-8 pb-12">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
+              <img
+                src="/eu-pnrr-logo.png"
+                alt="PNRR - Finanțat de Uniunea Europeană"
+                className="h-10 w-auto object-contain"
+              />
+              <span className="text-center font-body text-xs text-on-dark-muted sm:text-left">
+                PNRR. Finanțat de Uniunea Europeană – Următoarea Generație UE
+              </span>
+            </div>
+            <span className="font-body text-xs tabular-nums text-on-dark-muted">
+              © 2026 CESS TRUST S.R.L. CUI: 37449212
             </span>
           </div>
-          <span className="font-body text-xs" style={{ color: '#94a3b8' }}>
-            © 2026 CESS TRUST S.R.L. CUI: 37449212
-          </span>
-        </div>
 
-        {/* ANPC Badges — image + text links */}
-        <div className="flex flex-wrap items-center justify-center gap-6 mt-6">
-          <a
-            href="https://reclamatiisal.anpc.ro/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="/anpc-sol.png"
-              alt="ANPC SOL - Soluționarea alternativă a litigiilor"
-              className="h-12 w-auto object-contain"
-            />
-          </a>
-          <a
-            href="https://consumer-redress.ec.europa.eu/index_ro"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="/anpc-litigii.png"
-              alt="ANPC - European Online Dispute Resolution"
-              className="h-12 w-auto object-contain"
-            />
-          </a>
-        </div>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+            <a
+              href="https://reclamatiisal.anpc.ro/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/anpc-sol.png"
+                alt="ANPC SOL - Soluționarea alternativă a litigiilor"
+                className="h-12 w-auto object-contain"
+              />
+            </a>
+            <a
+              href="https://consumer-redress.ec.europa.eu/index_ro"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/anpc-litigii.png"
+                alt="ANPC - European Online Dispute Resolution"
+                className="h-12 w-auto object-contain"
+              />
+            </a>
+          </div>
 
-        {/* ANPC Text Link Badges */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mt-4">
-          <a
-            href="https://reclamatiisal.anpc.ro/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-body text-xs font-semibold uppercase tracking-wider px-4 py-2 transition-all duration-300 hover:-translate-y-0.5"
-            style={{
-              color: '#c9a87c',
-              border: '1px solid #c9a87c',
-              backgroundColor: 'transparent',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#c9a87c'
-              e.currentTarget.style.color = '#000000'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent'
-              e.currentTarget.style.color = '#c9a87c'
-            }}
-          >
-            Soluționarea alternativă a litigiilor
-          </a>
-          <a
-            href="https://consumer-redress.ec.europa.eu/index_ro"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-body text-xs font-semibold uppercase tracking-wider px-4 py-2 transition-all duration-300 hover:-translate-y-0.5"
-            style={{
-              color: '#c9a87c',
-              border: '1px solid #c9a87c',
-              backgroundColor: 'transparent',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#c9a87c'
-              e.currentTarget.style.color = '#000000'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent'
-              e.currentTarget.style.color = '#c9a87c'
-            }}
-          >
-            Soluționarea online a litigiilor
-          </a>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-6">
+            <a
+              href="https://reclamatiisal.anpc.ro/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-1 font-body text-xs text-on-dark-muted underline underline-offset-4 transition-colors hover:text-on-dark"
+            >
+              Soluționarea alternativă a litigiilor
+            </a>
+            <a
+              href="https://consumer-redress.ec.europa.eu/index_ro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-1 font-body text-xs text-on-dark-muted underline underline-offset-4 transition-colors hover:text-on-dark"
+            >
+              Soluționarea online a litigiilor
+            </a>
+          </div>
         </div>
-      </div>
+      </Container>
     </footer>
   )
 }

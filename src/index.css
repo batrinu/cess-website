@@ -4,37 +4,31 @@
 
 @layer base {
   :root {
-    --void: #000000;
-    --obsidian: #0a0a0a;
-    --graphite: #1a1a1a;
-    --charcoal: #262626;
-    --pearl: #f5f0eb;
-    --linen: #e8e0d8;
-    --copper: #c9a87c;
-    --copper-light: #d4b896;
-    --copper-dim: rgba(201,168,124,0.15);
-    /* --copper is the brand accent and is correct on dark grounds (9.38:1 on --void).
-       On light grounds it measures 1.98:1 on --pearl and 2.24:1 on white, far below the
-       4.5:1 AA minimum, so text and links on light surfaces use this darkened companion
-       instead: 5.46:1 on --pearl, 6.18:1 on white, same hue family. */
-    --copper-ink: #7a5c2e;
-    --teal: #5c7c6b;
-    --teal-dim: rgba(92,124,107,0.12);
-    --slate: #4a5568;
-    --slate-dark: #64748b;
+    /* Semantic institutional palette (RGB channels for Tailwind <alpha-value>) */
+    --color-alabaster: 246 243 236;     /* #F6F3EC, primary warm paper ground */
+    --color-vellum: 252 251 248;        /* #FCFBF8, elevated/alternate light surface */
+    --color-stone: 236 230 218;         /* #ECE6DA, subtle recessed warm panel */
+    --color-rule: 213 206 192;          /* #D5CEC0, editorial 1px hairlines on light */
+    --color-border-ui: 115 125 135;     /* #737D87, form input borders >= 3:1 WCAG 1.4.11 */
+    --color-ink: 20 29 38;              /* #141D26, primary text on light, 15.4:1 */
+    --color-ink-muted: 74 86 99;        /* #4A5663, secondary text on light, 6.8:1 */
+    --color-navy: 16 35 52;             /* #102334, primary dark institutional bands, CTA fill, footer */
+    --color-navy-elevated: 26 51 74;    /* #1A334A, hover & elevated dark panels */
+    --color-navy-deep: 10 23 34;        /* #0A1722, deepest footer/frame band */
+    --color-rule-dark: 45 71 94;        /* #2D475E, hairlines on dark */
+    --color-on-dark: 245 241 232;       /* #F5F1E8, primary text on dark, 14.2:1 */
+    --color-on-dark-muted: 194 205 214; /* #C2CDD6, secondary text on dark, 9.9:1 */
+    --color-copper: 184 122 75;         /* #B87A4B, decorative rules & dark graphics, 4.51:1 on navy */
+    --color-copper-light: 212 163 115;  /* #D4A373, accent text on dark, 7.08:1 on navy */
+    --color-copper-ink: 122 72 36;      /* #7A4824, accent text on light, 6.82:1 on alabaster */
+    --color-success-ink: 30 90 67;      /* #1E5A43 */
+    --color-success-dark: 124 197 166;  /* #7CC5A6 */
+    --color-error-ink: 166 38 38;       /* #A62626 */
+    --color-error-dark: 240 140 140;    /* #F08C8C */
+    --color-wa-bg: 37 211 102;          /* #25D366 */
+    --color-wa-ink: 7 43 28;            /* #072B1C, 7.72:1 */
 
-    /* Ground-aware text colours. The same muted grey cannot serve both grounds:
-       #64748b is 4.20:1 on --pearl and 3.66:1 on --graphite, failing AA on both.
-       Pick by the surface the text sits on, not by which looks nicer in isolation. */
-    --text-muted: #5a687d;        /* on light: 5.00:1 on --pearl, 5.66:1 on white  */
-    --text-muted-dark: #94a3b8;   /* on dark:  6.79:1 on --graphite, 8.19:1 on --void */
-    --teal-on-dark: #8bb39c;      /* --teal is 3.28:1 on --charcoal; this is 6.50:1 */
-    --error-on-dark: #e08585;     /* --error is 3.33:1 on --charcoal; this is 5.67:1 */
-    --error-ink: #b3261e;         /* on light: 5.77:1 on --pearl, 6.54:1 on white   */
-    --white: #ffffff;
-    --error: #c94c4c;
-    --success: #5c7c6b;
-
+    /* shadcn/ui HSL tokens */
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -62,15 +56,14 @@
   }
 
   body {
-    font-family: 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    @apply bg-alabaster font-body text-ink antialiased;
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    @apply font-display font-normal;
     text-wrap: balance;
+    font-optical-sizing: auto;
   }
 
   p {
@@ -81,29 +74,73 @@
     @apply border-border;
   }
 
-  /* Focus visible indicators for keyboard navigation */
   :focus-visible {
-    outline: 2px solid #c9a87c;
-    outline-offset: 2px;
+    outline: 3px solid rgb(var(--color-copper-ink));
+    outline-offset: 3px;
   }
 
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  [data-surface="dark"] :focus-visible,
+  .bg-navy :focus-visible,
+  footer :focus-visible {
+    outline-color: rgb(var(--color-copper-light));
   }
 }
 
-@layer utilities {
-  .section-padding {
-    @apply py-24 md:py-32 lg:py-40;
+@layer components {
+  .site-container {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12;
   }
 
-  .content-max-width {
-    @apply max-w-[1280px] mx-auto px-4 md:px-8;
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-36;
+  }
+
+  .display-1 {
+    @apply font-display text-[clamp(2.75rem,6.2vw,5.25rem)] font-normal leading-[1.02] tracking-[-0.03em];
+  }
+
+  .display-2 {
+    @apply font-display text-[clamp(2.125rem,4.2vw,3.625rem)] font-normal leading-[1.08] tracking-[-0.025em];
+  }
+
+  .display-3 {
+    @apply font-display text-[clamp(1.625rem,2.8vw,2.375rem)] font-normal leading-[1.14] tracking-[-0.02em];
+  }
+
+  .editorial-eyebrow {
+    @apply font-body text-xs font-semibold uppercase tracking-[0.14em];
+  }
+
+  .editorial-rule {
+    @apply border-t border-rule;
+  }
+
+  .editorial-rule-dark {
+    @apply border-t border-rule-dark;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 550ms ease, transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

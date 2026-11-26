@@ -1,39 +1,17 @@
-import { useRef, useEffect, useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import { actionClasses } from '@/components/site/ActionLink'
+import Container from '@/components/site/Container'
+import Reveal from '@/components/site/Reveal'
+import Section from '@/components/site/Section'
 
 export default function Newsletter() {
-  const sectionRef = useRef<HTMLElement>(null)
   const [email, setEmail] = useState('')
   const [gdprChecked, setGdprChecked] = useState(false)
   const [gdprError, setGdprError] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
-  useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        section.querySelector('.animate-in'),
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-          scrollTrigger: { trigger: section, start: 'top 85%' },
-        }
-      )
-    }, section)
-
-    return () => ctx.revert()
-  }, [])
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (!gdprChecked) {
       setGdprError(true)
@@ -48,113 +26,80 @@ export default function Newsletter() {
   }
 
   return (
-    <section
-      ref={sectionRef}
-      className="py-24 md:py-32"
-      style={{ backgroundColor: '#f5f0eb' }}
-    >
-      <div className="content-max-width">
-        <div className="animate-in max-w-[500px] mx-auto text-center" style={{ willChange: 'transform, opacity' }}>
-          <h3
-            className="font-display text-2xl md:text-3xl font-normal mb-4"
-            style={{ color: '#000000', textWrap: 'balance' }}
-          >
-            Abonează-te la newsletter
-          </h3>
-          <p
-            className="font-body text-base mb-8"
-            style={{ color: '#333333', lineHeight: 1.6 }}
-          >
-            Noutăți legislative și sfaturi utile din SSM, PSI, GDPR & fiscal – fără birocrație, direct în inbox!
-          </p>
-
-          {submitted ? (
-            <div
-              className="py-4 px-6"
-              style={{ backgroundColor: 'rgba(92,124,107,0.12)' }}
-            >
-              <p className="font-body text-sm font-medium" style={{ color: '#5c7c6b' }}>
-                Mulțumim! Te-ai abonat cu succes la newsletter-ul nostru.
+    <Section tone="vellum" className="border-t border-rule">
+      <Container>
+        <Reveal>
+          <div className="grid items-start gap-10 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <h2 className="display-3 text-ink">Abonează-te la Newsletter</h2>
+              <p className="mt-4 max-w-[46ch] text-base leading-7 text-ink-muted">
+                Primești noutăți legislative, informații fiscale și sfaturi practice pentru afacerea ta, direct în inbox!
               </p>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row gap-0">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Adresa ta de email"
-                  required
-                  className="flex-1 font-body text-base px-4 py-3.5 outline-none transition-colors duration-300 focus:border-[#c9a87c] placeholder:text-[#999999]"
-                  style={{
-                    backgroundColor: '#ffffff',
-                    border: '1px solid #e8e0d8',
-                    color: '#000000',
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = '#c9a87c'
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = '#e8e0d8'
-                  }}
-                />
-                <button
-                  type="submit"
-                  className="font-body text-[0.8125rem] font-semibold uppercase tracking-[0.1em] px-6 py-3.5 transition-all duration-300"
-                  style={{
-                    backgroundColor: '#c9a87c',
-                    color: '#000000',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#d4b896'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#c9a87c'
-                  }}
-                >
-                  ABONEAZĂ-TE
-                </button>
-              </div>
 
-              {/* GDPR Checkbox */}
-              <label className="flex items-start gap-3 text-left cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={gdprChecked}
-                  onChange={(e) => {
-                    setGdprChecked(e.target.checked)
-                    if (e.target.checked) setGdprError(false)
-                  }}
-                  className="mt-0.5 shrink-0 w-4 h-4 accent-[#c9a87c] cursor-pointer"
-                />
-                <span className="font-body text-sm" style={{ color: '#555555', lineHeight: 1.5 }}>
-                  Sunt de acord să primesc newsletter-ul și să fiu contactat conform{' '}
-                  <Link
-                    to="/confidentialitate"
-                    className="underline transition-colors duration-300"
-                    style={{ color: 'var(--copper-ink)' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = '#5c4522'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = 'var(--copper-ink)'
-                    }}
-                  >
-                    Politicii de Confidențialitate
-                  </Link>
-                  .
-                </span>
-              </label>
-              {gdprError && (
-                <p className="font-body text-sm text-left" style={{ color: '#c0392b' }}>
-                  Trebuie să accepti politica de confidențialitate.
-                </p>
+            <div className="lg:col-span-6 lg:col-start-7">
+              {submitted ? (
+                <div
+                  role="status"
+                  className="border border-success-ink/30 bg-alabaster px-6 py-5 text-sm font-medium text-success-ink"
+                >
+                  Mulțumim! Te-ai abonat cu succes la newsletter-ul CESS.
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <label htmlFor="home-newsletter-email" className="sr-only">
+                    Adresa ta de email
+                  </label>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <input
+                      id="home-newsletter-email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Adresa ta de email"
+                      required
+                      className="min-h-[48px] flex-1 rounded-[2px] border border-border-ui bg-alabaster px-4 py-3 font-body text-base text-ink placeholder:text-ink-muted focus:border-navy"
+                    />
+                    <button type="submit" className={actionClasses('primary', 'shrink-0')}>
+                      ABONEAZĂ-TE
+                    </button>
+                  </div>
+
+                  <label className="flex min-h-[44px] cursor-pointer items-start gap-3 py-1 text-sm leading-6 text-ink-muted">
+                    <input
+                      type="checkbox"
+                      checked={gdprChecked}
+                      onChange={(e) => {
+                        setGdprChecked(e.target.checked)
+                        if (e.target.checked) setGdprError(false)
+                      }}
+                      aria-invalid={Boolean(gdprError)}
+                      aria-describedby={gdprError ? 'newsletter-gdpr-error' : undefined}
+                      className="mt-1 h-5 w-5 shrink-0 accent-navy"
+                    />
+                    <span>
+                      Sunt de acord să primesc newsletter-ul și să fiu contactat conform{' '}
+                      <Link
+                        to="/confidentialitate"
+                        className="font-medium text-copper-ink underline underline-offset-4 hover:text-navy"
+                      >
+                        Politicii de confidențialitate
+                      </Link>
+                      .
+                    </span>
+                  </label>
+
+                  {gdprError && (
+                    <p id="newsletter-gdpr-error" role="alert" className="text-sm font-medium text-error-ink">
+                      Trebuie să accepti politica de confidențialitate.
+                    </p>
+                  )}
+                </form>
               )}
-            </form>
-          )}
-        </div>
-      </div>
-    </section>
+            </div>
+          </div>
+        </Reveal>
+      </Container>
+    </Section>
   )
 }

@@ -21,11 +21,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Split long-lived library code out of the app chunk so a content or
-        // component change does not force visitors to re-download React and GSAP.
-        // three is already its own chunk via the dynamic import in FluidGateway.
+        // component change does not force visitors to re-download React.
         manualChunks: {
           react: ["react", "react-dom", "react-router"],
-          gsap: ["gsap", "@gsap/react"],
         },
       },
     },

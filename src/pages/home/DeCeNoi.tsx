@@ -1,10 +1,8 @@
-import { useRef, useEffect } from 'react'
-import { Link } from 'react-router'
 import { Check } from 'lucide-react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import ActionLink from '@/components/site/ActionLink'
+import Container from '@/components/site/Container'
+import Reveal from '@/components/site/Reveal'
+import Section from '@/components/site/Section'
 
 const checkmarks = [
   'Servicii complete, conectate între ele și gândite pentru tine',
@@ -21,142 +19,58 @@ const stats = [
 ]
 
 export default function DeCeNoi() {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
-
-    const ctx = gsap.context(() => {
-      const leftEls = section.querySelectorAll('.left-animate')
-      gsap.fromTo(
-        leftEls,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-          scrollTrigger: { trigger: section, start: 'top 85%' },
-        }
-      )
-
-      const statBlocks = section.querySelectorAll('.stat-block')
-      gsap.fromTo(
-        statBlocks,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-          scrollTrigger: { trigger: section, start: 'top 85%' },
-        }
-      )
-    }, section)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section
-      ref={sectionRef}
-      className="section-padding"
-      style={{ backgroundColor: '#f5f0eb' }}
-    >
-      <div className="content-max-width">
-        <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-12 lg:gap-16 items-start">
-          {/* Left Column - Text */}
-          <div>
-            <h2
-              className="left-animate font-display font-normal mb-8"
-              style={{
-                fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
-                color: '#000000',
-                lineHeight: 1.1,
-                letterSpacing: '-0.01em',
-                textWrap: 'balance',
-                willChange: 'transform, opacity',
-              }}
-            >
-              Partenerul tău de conformare
-            </h2>
+    <Section tone="vellum">
+      <Container>
+        <div className="grid items-start gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <Reveal>
+              <h2 className="display-2 text-ink">Partenerul tău de conformare</h2>
 
-            <div className="left-animate max-w-[560px] space-y-4 mb-8" style={{ willChange: 'transform, opacity' }}>
-              <p className="font-body text-lg" style={{ color: '#333333', lineHeight: 1.7 }}>
-                Când vrei mai puțină birocrație, dar conformare 100%, ai nevoie de o echipă care înțelege nu doar ce spune legea, ci și ce înseamnă să o aplici în practică.
-              </p>
-              <p className="font-body text-lg" style={{ color: '#333333', lineHeight: 1.7 }}>
-                La CESS, gândim toate serviciile în jurul nevoilor reale ale antreprenorilor. Nu venim cu soluții "din cărți", ci cu un sistem integrat, logic și ușor de folosit – chiar și pentru firmele care pornesc de la zero.
-              </p>
-            </div>
-
-            {/* Checkmarks */}
-            <div className="left-animate space-y-3 mb-8" style={{ willChange: 'transform, opacity' }}>
-              {checkmarks.map((item, i) => (
-                <div key={i} className="flex gap-3">
-                  <div className="mt-0.5 shrink-0">
-                    <Check size={18} style={{ color: '#5c7c6b' }} strokeWidth={2.5} />
-                  </div>
-                  <p className="font-body text-base" style={{ color: '#333333', lineHeight: 1.6 }}>
-                    {item}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <p
-              className="left-animate font-body text-base font-medium mb-8"
-              style={{ color: '#000000', willChange: 'transform, opacity' }}
-            >
-              CESS înseamnă eficiență, prevenție și parteneriat pe termen lung. Suntem alături de tine la fiecare pas, cu soluții reale, aplicabile și rezultate vizibile.
-            </p>
-
-            <Link
-              to="/contact"
-              className="left-animate inline-block font-body text-[0.8125rem] font-semibold uppercase tracking-[0.1em] px-8 py-3.5 transition-all duration-300 hover:-translate-y-0.5"
-              style={{
-                backgroundColor: '#c9a87c',
-                color: '#000000',
-                willChange: 'transform, opacity',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#d4b896'
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(201,168,124,0.3)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#c9a87c'
-                e.currentTarget.style.boxShadow = 'none'
-              }}
-            >
-              Contactează-ne
-            </Link>
-          </div>
-
-          {/* Right Column - Stats */}
-          <div className="flex flex-col gap-10 lg:pt-24">
-            {stats.map((stat, i) => (
-              <div key={i} className="stat-block flex flex-col items-center lg:items-start text-center lg:text-left" style={{ willChange: 'transform, opacity' }}>
-                <p
-                  className="font-display font-normal mb-2"
-                  style={{
-                    fontSize: 'clamp(3rem, 6vw, 5rem)',
-                    color: 'var(--copper-ink)',
-                    lineHeight: 1,
-                  }}
-                >
-                  {stat.value}
+              <div className="mt-6 max-w-[62ch] space-y-4 text-lg leading-8 text-ink-muted">
+                <p>
+                  Când vrei mai puțină birocrație, dar conformare 100%, ai nevoie de o echipă care înțelege nu doar ce spune legea, ci și ce înseamnă să o aplici în practică.
                 </p>
-                <p className="font-body text-sm" style={{ color: '#555555' }}>
-                  {stat.label}
+                <p>
+                  La CESS, gândim toate serviciile în jurul nevoilor reale ale antreprenorilor. Nu venim cu soluții "din cărți", ci cu un sistem integrat, logic și ușor de folosit – chiar și pentru firmele care pornesc de la zero.
                 </p>
               </div>
-            ))}
+
+              <ul className="mt-7 space-y-3">
+                {checkmarks.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <Check size={18} strokeWidth={2.5} aria-hidden="true" className="mt-1 shrink-0 text-success-ink" />
+                    <span className="text-base leading-7 text-ink-muted">{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="mt-7 max-w-[62ch] text-base font-medium leading-7 text-ink">
+                CESS înseamnă eficiență, prevenție și parteneriat pe termen lung. Suntem alături de tine la fiecare pas, cu soluții reale, aplicabile și rezultate vizibile.
+              </p>
+
+              <div className="mt-9">
+                <ActionLink to="/contact">Contactează-ne</ActionLink>
+              </div>
+            </Reveal>
+          </div>
+
+          <div className="lg:col-span-4 lg:col-start-9">
+            <Reveal delay={120}>
+              <div className="border-b border-rule">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="border-t border-rule py-7">
+                    <p className="font-display text-5xl leading-none text-navy tabular-nums md:text-6xl">
+                      {stat.value}
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-ink-muted">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
           </div>
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }
