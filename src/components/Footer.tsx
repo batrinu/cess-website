@@ -142,7 +142,11 @@ export default function Footer() {
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
               <img
-                src="/eu-pnrr-logo.png"
+                src="/eu-pnrr-logo.webp"
+                width={179}
+                height={120}
+                loading="lazy"
+                decoding="async"
                 alt="PNRR - Finanțat de Uniunea Europeană"
                 className="h-10 w-auto object-contain"
               />
@@ -162,7 +166,11 @@ export default function Footer() {
               rel="noopener noreferrer"
             >
               <img
-                src="/anpc-sol.png"
+                src="/anpc-sol.webp"
+                width={215}
+                height={144}
+                loading="lazy"
+                decoding="async"
                 alt="ANPC SOL - Soluționarea alternativă a litigiilor"
                 className="h-12 w-auto object-contain"
               />
@@ -173,7 +181,11 @@ export default function Footer() {
               rel="noopener noreferrer"
             >
               <img
-                src="/anpc-litigii.png"
+                src="/anpc-litigii.webp"
+                width={215}
+                height={144}
+                loading="lazy"
+                decoding="async"
                 alt="ANPC - European Online Dispute Resolution"
                 className="h-12 w-auto object-contain"
               />

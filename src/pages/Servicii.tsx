@@ -481,16 +481,26 @@ function ServiceSection({
             {/* ── Media column (always second on mobile) ── */}
             <div className={imageClass}>
               {service.image ? (
-                <div className="overflow-hidden border border-rule bg-stone aspect-[16/10]">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    loading="lazy"
-                    className={`h-full w-full object-cover ${
-                      service.id === 'gdpr' ? 'saturate-[0.55] contrast-[0.95]' : ''
-                    }`}
-                  />
-                </div>
+                (() => {
+                  const base = service.image.replace(/^\//, '').replace(/\.jpg$/, '')
+                  return (
+                    <div className="overflow-hidden border border-rule bg-stone aspect-[16/10]">
+                      <img
+                        src={`/${base}-960.webp`}
+                        srcSet={`/${base}-480.webp 480w, /${base}-760.webp 760w, /${base}-960.webp 960w`}
+                        sizes="(max-width: 1023px) calc(100vw - 40px), 580px"
+                        width={960}
+                        height={536}
+                        alt={service.title}
+                        loading="lazy"
+                        decoding="async"
+                        className={`h-full w-full object-cover ${
+                          service.id === 'gdpr' ? 'saturate-[0.55] contrast-[0.95]' : ''
+                        }`}
+                      />
+                    </div>
+                  )
+                })()
               ) : (
                 <div className="border border-rule bg-stone/70 p-8 md:p-10 flex flex-col justify-between aspect-[16/10]">
                   <div>
@@ -568,9 +578,15 @@ export default function Servicii() {
           <div className="lg:col-span-5">
             <div className="overflow-hidden border border-rule bg-stone aspect-[16/10]">
               <img
-                src="/service-contabilitate.jpg"
+                src="/service-contabilitate-960.webp"
+                srcSet="/service-contabilitate-480.webp 480w, /service-contabilitate-760.webp 760w, /service-contabilitate-960.webp 960w"
+                sizes="(max-width: 1023px) calc(100vw - 40px), 480px"
+                width={960}
+                height={536}
                 alt="Servicii integrate de contabilitate și conformare CESS"
                 fetchPriority="high"
+                loading="eager"
+                decoding="sync"
                 className="h-full w-full object-cover"
               />
             </div>

@@ -1,14 +1,13 @@
 import path from "path"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
-import { inspectAttr } from 'plugin-inspect-react-code'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   // Must be an absolute base now that routes are real paths: with './', assets on a
   // nested route such as /blog/post would resolve to /blog/assets/… and 404.
   base: '/',
-  plugins: [inspectAttr(), react()],
+  plugins: [react()],
   server: {
     port: 3000,
   },
@@ -18,14 +17,16 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
-      output: {
-        // Split long-lived library code out of the app chunk so a content or
-        // component change does not force visitors to re-download React.
-        manualChunks: {
-          react: ["react", "react-dom", "react-router"],
+    rollupOptions: isSsrBuild
+      ? {}
+      : {
+          output: {
+            // Split long-lived library code out of the app chunk so a content or
+            // component change does not force visitors to re-download React.
+            manualChunks: {
+              react: ["react", "react-dom", "react-router"],
+            },
+          },
         },
-      },
-    },
   },
-});
+}))

@@ -1,6 +1,5 @@
 import Container from '@/components/site/Container'
 import ActionLink from '@/components/site/ActionLink'
-import Reveal from '@/components/site/Reveal'
 
 export default function FluidGateway() {
   return (
@@ -44,12 +43,18 @@ export default function FluidGateway() {
           </div>
         </div>
 
-        <Reveal delay={100} className="relative isolate lg:col-span-5">
+        <div className="relative isolate lg:col-span-5">
           <div className="aspect-[16/10] overflow-hidden border border-rule bg-stone shadow-[0_20px_50px_rgba(16,35,52,0.08)]">
             <img
-              src="/about-team.jpg"
+              src="/about-team-960.webp"
+              srcSet="/about-team-480.webp 480w, /about-team-760.webp 760w, /about-team-960.webp 960w"
+              sizes="(max-width: 1023px) calc(100vw - 40px), 480px"
+              width={960}
+              height={536}
               alt="Echipa CESS"
               fetchPriority="high"
+              loading="eager"
+              decoding="sync"
               className="h-full w-full object-cover object-center"
             />
           </div>
@@ -57,7 +62,7 @@ export default function FluidGateway() {
             aria-hidden="true"
             className="absolute -bottom-3 -right-3 -z-10 hidden h-28 w-28 border-b-2 border-r-2 border-copper sm:block"
           />
-        </Reveal>
+        </div>
       </Container>
 
       <div aria-hidden="true" className="mt-12 hidden justify-center md:flex">

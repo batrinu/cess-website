@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import {
   Phone,
@@ -42,6 +42,26 @@ const socialButtonClassName =
   'inline-flex min-h-[48px] items-center justify-center gap-3 rounded-[2px] border border-on-dark/55 px-6 py-3 font-body text-sm font-semibold text-on-dark transition-colors hover:bg-on-dark hover:text-navy'
 
 export default function Contact() {
+  const [mapLoaded, setMapLoaded] = useState(false)
+  const mapSectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (mapLoaded || typeof IntersectionObserver === 'undefined') return
+    const target = mapSectionRef.current
+    if (!target) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setMapLoaded(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '120px' },
+    )
+    observer.observe(target)
+    return () => observer.disconnect()
+  }, [mapLoaded])
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -200,10 +220,16 @@ export default function Contact() {
           <div className="lg:col-span-5">
             <div className="aspect-[16/10] overflow-hidden border border-rule bg-stone">
               <img
-                src="/contact-office.jpg"
+                src="/contact-office-960.webp"
+                srcSet="/contact-office-480.webp 480w, /contact-office-760.webp 760w, /contact-office-960.webp 960w"
+                sizes="(max-width: 1023px) calc(100vw - 40px), 480px"
+                width={960}
+                height={536}
                 alt="Biroul CESS TRUST din Constanța"
                 className="h-full w-full object-cover"
                 fetchPriority="high"
+                loading="eager"
+                decoding="sync"
               />
             </div>
           </div>
@@ -632,18 +658,46 @@ export default function Contact() {
         </Container>
       </Section>
 
-      {/* Section 4: Google Maps Embed */}
-      <section className="border-t border-rule bg-alabaster">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11452.0!2d28.6383!3d44.1733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDEwJzI0LjAiTiAyOMKwMzgnMTguMCJF!5e0!3m2!1sro!2sro!4v1"
-          width="100%"
-          height="100%"
-          className="block h-[380px] w-full border-0 grayscale-[0.45] contrast-[0.95] sepia-[0.08] md:h-[420px]"
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Locație CESS Constanța"
-        />
+      {/* Section 4: Google Maps Embed (deferred until scrolled into view) */}
+      <section ref={mapSectionRef} className="border-t border-rule bg-alabaster">
+        <div className="h-[380px] w-full md:h-[420px]">
+          {mapLoaded ? (
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11452.0!2d28.6383!3d44.1733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDEwJzI0LjAiTiAyOMKwMzgnMTguMCJF!5e0!3m2!1sro!2sro!4v1"
+              width="100%"
+              height="100%"
+              className="block h-full w-full border-0 grayscale-[0.45] contrast-[0.95] sepia-[0.08]"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Locație CESS Constanța"
+            />
+          ) : (
+            <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-vellum px-6 text-center">
+              <MapPin className="h-7 w-7 text-copper-ink" strokeWidth={1.75} aria-hidden="true" />
+              <p className="font-display text-2xl text-ink">
+                Str. Mircea cel Bătrân nr. 103, Constanța
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <button
+                  type="button"
+                  onClick={() => setMapLoaded(true)}
+                  className="inline-flex min-h-[48px] items-center justify-center rounded-[2px] bg-navy px-6 py-3 font-body text-sm font-semibold text-on-dark transition-colors hover:bg-navy/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
+                >
+                  Încarcă harta interactivă
+                </button>
+                <a
+                  href="https://maps.google.com/?q=44.1733,28.6383"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-[48px] items-center px-3 font-body text-sm font-semibold text-navy underline underline-offset-4 hover:text-copper-ink"
+                >
+                  Deschide în Google Maps
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
       </section>
     </div>
   )

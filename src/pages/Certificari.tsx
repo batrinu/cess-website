@@ -14,6 +14,7 @@ interface CertificationDoc {
   detail: string
   statusTone: 'active' | 'year'
   description: string
+  thumb: string
   image: string
 }
 
@@ -25,7 +26,8 @@ const certifications: CertificationDoc[] = [
     statusTone: 'year',
     description:
       'Autorizație emisă de Corpul Experților Contabili și Contabililor Autorizați din România, care atestă dreptul de a practica activități de contabilitate și audit.',
-    image: '/ceccar-2025.jpg',
+    thumb: '/ceccar-2025-600.webp',
+    image: '/ceccar-2025.webp',
   },
   {
     id: 2,
@@ -34,7 +36,8 @@ const certifications: CertificationDoc[] = [
     statusTone: 'active',
     description:
       'Certificat care atestă abilitarea profesională în domeniul serviciilor de suport administrative și de conformare.',
-    image: '/certificat-abilitare.jpg',
+    thumb: '/certificat-abilitare-600.webp',
+    image: '/certificat-abilitare.webp',
   },
 ]
 
@@ -101,10 +104,13 @@ export default function Certificari() {
                   >
                     <div className="aspect-[4/3] w-full overflow-hidden bg-vellum">
                       <img
-                        src={cert.image}
+                        src={cert.thumb}
+                        width={600}
+                        height={448}
                         alt={cert.title}
                         className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   </button>
@@ -184,8 +190,10 @@ export default function Certificari() {
             </button>
             <img
               src={lightboxImage}
+              width={1200}
+              height={896}
               alt={activeCertification?.title ?? 'Document'}
-              className="max-h-[90vh] max-w-full object-contain"
+              className="h-auto max-h-[90vh] w-auto max-w-full object-contain"
               onClick={(e) => e.stopPropagation()}
             />
           </div>,

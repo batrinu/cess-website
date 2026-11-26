@@ -24,9 +24,7 @@ function isRouteActive(pathname: string, linkPath: string) {
 }
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(
-    () => typeof window !== 'undefined' && window.scrollY > 50,
-  )
+  const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   const toggleBtnRef = useRef<HTMLButtonElement>(null)

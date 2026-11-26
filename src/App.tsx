@@ -7,14 +7,39 @@ import Layout from './components/Layout'
 // lives in Layout, around the Outlet.
 import Home from './pages/Home'
 
-const Servicii = lazy(() => import('./pages/Servicii'))
-const Despre = lazy(() => import('./pages/Despre'))
-const Certificari = lazy(() => import('./pages/Certificari'))
-const Blog = lazy(() => import('./pages/Blog'))
-const Contact = lazy(() => import('./pages/Contact'))
-const Termeni = lazy(() => import('./pages/Termeni'))
-const Confidentialitate = lazy(() => import('./pages/Confidentialitate'))
-const Cookie = lazy(() => import('./pages/Cookie'))
+const loaders = {
+  '/servicii': () => import('./pages/Servicii'),
+  '/despre': () => import('./pages/Despre'),
+  '/certificari': () => import('./pages/Certificari'),
+  '/blog': () => import('./pages/Blog'),
+  '/contact': () => import('./pages/Contact'),
+  '/termeni': () => import('./pages/Termeni'),
+  '/confidentialitate': () => import('./pages/Confidentialitate'),
+  '/cookie': () => import('./pages/Cookie'),
+} as const
+
+const Servicii = lazy(loaders['/servicii'])
+const Despre = lazy(loaders['/despre'])
+const Certificari = lazy(loaders['/certificari'])
+const Blog = lazy(loaders['/blog'])
+const Contact = lazy(loaders['/contact'])
+const Termeni = lazy(loaders['/termeni'])
+const Confidentialitate = lazy(loaders['/confidentialitate'])
+const Cookie = lazy(loaders['/cookie'])
+
+/** Preload lazy route module before hydrating a prerendered interior page. */
+export async function preloadRoute(pathname: string): Promise<void> {
+  const clean = pathname === '/' ? '/' : pathname.replace(/\/+$/, '')
+  if (clean === '/') return
+  if (clean.startsWith('/blog')) {
+    await loaders['/blog']()
+    return
+  }
+  const loader = loaders[clean as keyof typeof loaders]
+  if (loader) {
+    await loader()
+  }
+}
 
 export default function App() {
   return (

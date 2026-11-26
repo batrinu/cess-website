@@ -22,7 +22,7 @@ interface ArticleData {
   date: string
   fullDate: string
   excerpt: string
-  image: string
+  imageBase: string
   intro: string
   sections: ArticleSection[]
   conclusion: string
@@ -35,7 +35,7 @@ const ARTICLE: ArticleData = {
   fullDate: '25 iulie 2024',
   excerpt:
     'Află de ce un contabil eficient este un partener esențial pentru stabilitatea și creșterea companiei tale.',
-  image: '/blog-contabilitate.jpg',
+  imageBase: 'blog-contabilitate',
   intro:
     'Într-un mediu economic tot mai competitiv, fiecare decizie financiară contează. Un contabil eficient nu este doar un furnizor de servicii administrative, ci un partener esențial în dezvoltarea oricărei afaceri. De la gestionarea fluxurilor financiare la încadrarea corectă în legislația fiscală, eficiența contabilului influențează direct stabilitatea și creșterea companiei.',
   sections: [
@@ -197,7 +197,13 @@ function BlogListing() {
                 className="group block aspect-[16/10] overflow-hidden border border-rule bg-stone md:col-span-7"
               >
                 <img
-                  src={ARTICLE.image}
+                  src={`/${ARTICLE.imageBase}-960.webp`}
+                  srcSet={`/${ARTICLE.imageBase}-480.webp 480w, /${ARTICLE.imageBase}-760.webp 760w, /${ARTICLE.imageBase}-960.webp 960w`}
+                  sizes="(max-width: 767px) calc(100vw - 40px), 700px"
+                  width={960}
+                  height={536}
+                  loading="lazy"
+                  decoding="async"
                   alt={ARTICLE.title}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
@@ -269,10 +275,16 @@ function BlogArticle({ article }: { article: ArticleData }) {
 
             <div className="mt-10 aspect-[16/9] overflow-hidden border border-rule-dark bg-navy-elevated">
               <img
-                src={article.image}
+                src={`/${article.imageBase}-960.webp`}
+                srcSet={`/${article.imageBase}-480.webp 480w, /${article.imageBase}-760.webp 760w, /${article.imageBase}-960.webp 960w`}
+                sizes="(max-width: 959px) calc(100vw - 40px), 896px"
+                width={960}
+                height={536}
                 alt={article.title}
                 className="h-full w-full object-cover"
                 fetchPriority="high"
+                loading="eager"
+                decoding="sync"
               />
             </div>
           </div>

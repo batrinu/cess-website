@@ -174,9 +174,15 @@ export default function Despre() {
           <div className="lg:col-span-5">
             <div className="overflow-hidden border border-rule bg-stone aspect-[16/10]">
               <img
-                src="/about-team.jpg"
+                src="/about-team-960.webp"
+                srcSet="/about-team-480.webp 480w, /about-team-760.webp 760w, /about-team-960.webp 960w"
+                sizes="(max-width: 1023px) calc(100vw - 40px), 480px"
+                width={960}
+                height={536}
                 alt="Echipa de specialiști CESS"
                 fetchPriority="high"
+                loading="eager"
+                decoding="sync"
                 className="h-full w-full object-cover"
               />
             </div>
@@ -294,9 +300,12 @@ export default function Despre() {
                   className="flex items-center justify-center border border-rule bg-vellum p-6"
                 >
                   <img
-                    src={logo.src}
+                    src={logo.src.replace('.png', '.webp')}
+                    width={268}
+                    height={180}
                     alt={logo.alt}
                     loading="lazy"
+                    decoding="async"
                     className="h-[60px] w-auto object-contain opacity-75 grayscale transition duration-200 hover:grayscale-0 hover:opacity-100"
                   />
                 </div>
